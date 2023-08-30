@@ -1,0 +1,10 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+  <h5>Eliminar Jugador</h5>
+  <p>¿Estás seguro de que deseas eliminar al jugador {{ jugador.apellido }}?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-xs" type="submit">Eliminar</button>
+  </form>
+{% endblock %}
