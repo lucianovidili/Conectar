@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from AppLigaDeFutbol.forms import JugadorFormulario, DirectorTecnicoFormulario, ClubFormulario, JugadorBusquedaFormulario, UserEditForm
+from AppLigaDeFutbol.forms import JugadorFormulario, DirectorTecnicoFormulario, ClubFormulario, OfertaFormulario, JugadorBusquedaFormulario, UserEditForm
 from .models import Jugador
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -20,8 +20,23 @@ def agregar_jugador(request):
         form = JugadorFormulario()
     return render(request, 'jugador_formulario.html', {'form': form})
 
+def ver_jugador(request, id):
+    jugador = Jugador.objects.get(pk=id)
+    return render(request, 'jugador_ver.html', {'jugador': jugador})
+
+def comprar_jugador(request, id):
+    if request.method == 'POST':
+        form = OfertaFormulario(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Inicio')
+    else:
+        jugador = Jugador.objects.get(pk=id)
+        form = OfertaFormulario()
+    return render(request, 'jugador_comprar.html', {'form': form, 'jugador': jugador})
+
 class listar_jugadores(ListView):
-    template_name = 'jugadores_lista.html'
+    template_name = 'jugadores_transferibles.html'
     context_object_name = 'jugadores'
     model = Jugador
     

@@ -1,0 +1,16 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+  <div class="divPrincipal">
+    <h5 style="margin-bottom: 15px;">Jugadores Transferibles</h5>
+    {% for j in jugadores %}
+      {% if j.transferible == 'si' %}
+        <div class="div-jugadores">
+          <li>{{j}}</li>
+          <a class="btn btn-primary btn-xs" href={% url 'VerJugador' j.pk %}>Ver</a>
+          <a class="btn btn-success btn-xs" href={% url 'ComprarJugador' j.pk %}>Ofertar</a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

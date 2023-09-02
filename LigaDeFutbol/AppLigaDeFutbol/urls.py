@@ -7,13 +7,15 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', views.buscar_jugadores_por_nombre, name="Inicio"),
+    path('', views.inicio, name="Inicio"),
     path('jugadorFormulario/', views.agregar_jugador, name="JugadorFormulario"),
     path('dtFormulario/', views.agregar_director_tecnico, name="DTFormulario"),
     path('clubFormulario/', views.agregar_club, name="ClubFormulario"),
     path('buscarPorNombre/', views.buscar_jugadores_por_nombre, name='BuscarJugadoresPorNombre'),
-    path('listarJugadores/', views.listar_jugadores.as_view(), name='ListarJugadores'),
+    path('jugadoresTransferibles/', views.listar_jugadores.as_view(), name='JugadoresTransferibles'),
     path('eliminarJugador/<int:pk>', views.eliminar_jugador.as_view(), name='EliminarJugador'),
+    path('verJugador/<int:id>', views.ver_jugador, name='VerJugador'),
+    path('comprarJugador/<int:id>', views.comprar_jugador, name='ComprarJugador'),
     path('editarJugador/<int:pk>', views.editar_jugador.as_view(), name='EditarJugador'),
     path('editarPerfil/', views.editar_perfil, name='EditarPerfil'),
 ]

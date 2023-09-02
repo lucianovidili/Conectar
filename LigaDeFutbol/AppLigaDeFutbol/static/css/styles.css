@@ -10824,42 +10824,23 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-.features-icons {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
-}
-.features-icons .features-icons-item {
-  max-width: 20rem;
-}
-.features-icons .features-icons-item .features-icons-icon {
-  height: 7rem;
-}
-.features-icons .features-icons-item .features-icons-icon i {
-  font-size: 4.5rem;
-}
 
-header.masthead {
+.header {
   position: relative;
-  /* background-color: #343a40; */
   background: url("../assets/img/bg-masthead.jpg") no-repeat center center;
   background-size: cover;
-  padding-top: 8rem;
-  padding-bottom: 8rem;
-  height: 50px;
+  padding-top: 20rem;
+  padding-bottom: 20rem;
 }
-header.masthead:before {
+.header:before {
   content: "";
   position: absolute;
-  background-color: #1c375e;
   height: 100%;
   width: 100%;
   top: 0;
-  left: 0;
-  opacity: 0.3;
+  left: 0;  
 }
-header.masthead h1, header.masthead .h1 {
-  font-size: 2rem;
-}
+
 @media (min-width: 768px) {
   header.masthead {
     padding-top: 12rem;
@@ -10870,48 +10851,10 @@ header.masthead h1, header.masthead .h1 {
   }
 }
 
-.showcase .showcase-text {
-  padding: 3rem;
-}
-.showcase .showcase-img {
-  min-height: 30rem;
-  background-size: cover;
-}
 @media (min-width: 768px) {
   .showcase .showcase-text {
     padding: 7rem;
   }
-}
-
-.testimonials {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
-}
-.testimonials .testimonial-item {
-  max-width: 18rem;
-}
-.testimonials .testimonial-item img {
-  max-width: 12rem;
-  box-shadow: 0px 5px 5px 0px #adb5bd;
-}
-
-.call-to-action {
-  position: relative;
-  background-color: #343a40;
-  background: url("../assets/img/bg-masthead.jpg") no-repeat center center;
-  background-size: cover;
-  padding-top: 7rem;
-  padding-bottom: 7rem;
-}
-.call-to-action:before {
-  content: "";
-  position: absolute;
-  background-color: #1c375e;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  opacity: 0.35;
 }
 
 footer.footer {
@@ -10950,9 +10893,9 @@ footer.footer {
   min-width: 120px;
 }
 
-li {
+.headerLi {
+  height: 50px;
   margin: 0;
-  margin-right: 220px;
   border-style: solid;
   border-width: 1px;
   border-top: none;
@@ -10961,7 +10904,7 @@ li {
   border-right: none;
 }
 
-li:hover {
+.headerLi:hover {
   border-width: 3px;
 }
 
@@ -11027,15 +10970,55 @@ li:hover {
   transform: translate(0, 0);
 }
 
-.headerLi {
-  height: 50px;
+.navbarTop {
+  height: 77px;
+}
+
+.headerWord {
+  margin-right: 200px;
 }
 
 .headerWord:hover {
   color: #007bff;
 }
 
+.headerJugadores {
+  margin-left: 70px;
+}
+
+.userName:hover {
+  color: #007bff;
+}
+
 /* Inicialmente las lista de Jugadores, DT's y Clubes están ocultas */
 #dropJugadores, #dropDts, #dropdropClubes {
   visibility: hidden;
+}
+
+.divPrincipal {
+  margin-left: 33px; 
+  margin-top:  33px;
+}
+
+.btn-guardar {
+  margin-top: 15px;
+}
+
+.imagenJugador {
+  height: 200px;
+  width: 200px;
+  margin-left: 33px;
+}
+
+.descJugador { 
+  font-size: large;
+  font-family: 'Montserrat', sans-serif;
+}
+
+li {
+  list-style: none;
+}
+
+.div-jugadores {
+  margin-bottom: 13px;
 }

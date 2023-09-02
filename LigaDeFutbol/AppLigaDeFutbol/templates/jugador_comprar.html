@@ -1,0 +1,15 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+  <div class="divPrincipal">
+    <h5 style="margin-bottom: 15px;">Ofertar por {{jugador.nombre}} {{jugador.apellido}}</h5>
+    <form method="post">
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+      </table>
+      <button class="btn btn-sm btn-primary btn-guardar" type="submit">Enviar</button>
+      <a class="btn btn-sm btn-secondary btn-guardar" href={% url 'JugadoresTransferibles' %}>Volver</a>
+    </form>
+  </div>
+{% endblock %}
