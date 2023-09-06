@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from AppLigaDeFutbol.forms import JugadorFormulario, DirectorTecnicoFormulario, ClubFormulario, OfertaFormulario, JugadorBusquedaFormulario, UserEditForm
-from .models import Jugador
+from .models import Jugador, Oferta
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -13,44 +13,55 @@ def inicio(request):
 def agregar_jugador(request):
     if request.method == 'POST':
         form = JugadorFormulario(request.POST)
+        form.instance.usuario = request.user
         if form.is_valid():
             form.save()
-            return redirect('BuscarJugadoresPorNombre')
+            return redirect('Inicio')
     else:
         form = JugadorFormulario()
     return render(request, 'jugador_formulario.html', {'form': form})
-
-def ver_jugador(request, id):
+    
+def ver_jugador(request, id, plantilla):
     jugador = Jugador.objects.get(pk=id)
-    return render(request, 'jugador_ver.html', {'jugador': jugador})
+    ofertas = Oferta.objects.filter(jugador__nombre=jugador.nombre)
+    return render(request, 'jugador_ver.html', {'jugador': jugador, 'plantilla': plantilla, 'ofertas': ofertas})
 
-def comprar_jugador(request, id):
+def ofertar_jugador(request, id, ver_jugador):
     if request.method == 'POST':
         form = OfertaFormulario(request.POST)
+        jugador = Jugador.objects.get(pk=request.POST.get("jugador_id"))
+        usuario_nombre = request.POST.get("usuario_nombre")
+        form.instance.jugador = jugador
+        form.instance.usuario_nombre = usuario_nombre
         if form.is_valid():
             form.save()
             return redirect('Inicio')
     else:
         jugador = Jugador.objects.get(pk=id)
         form = OfertaFormulario()
-    return render(request, 'jugador_comprar.html', {'form': form, 'jugador': jugador})
+        form.instance.jugador = jugador
+    return render(request, 'jugador_ofertar.html', {'form': form, 'jugador': jugador, 'ver_jugador': ver_jugador})
 
-class listar_jugadores(ListView):
+class listar_jugadores_transferibles(ListView):
     template_name = 'jugadores_transferibles.html'
+    context_object_name = 'jugadores'
+    model = Jugador
+    
+class listar_jugadores_plantilla(ListView):
+    template_name = 'jugadores_plantilla.html'
     context_object_name = 'jugadores'
     model = Jugador
     
 class eliminar_jugador(DeleteView):
     model = Jugador
     template_name = 'jugador_eliminar.html'
-    success_url = reverse_lazy('ListarJugadores')
+    success_url = reverse_lazy('JugadoresPlantilla')
     
 class editar_jugador(UpdateView):
     model = Jugador
-    # template_name = 'jugador_editar.html'
     template_name = 'jugador_formulario.html'
-    fields = ['nombre', 'apellido', 'pierna_habil']
-    success_url = reverse_lazy('ListarJugadores')
+    fields = ['nombre', 'apellido', 'posicion', 'promedio', 'pierna_habil', 'transferible']
+    success_url = reverse_lazy('JugadoresPlantilla')
 
 def agregar_director_tecnico(request):
     if request.method == 'POST':

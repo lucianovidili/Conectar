@@ -10901,12 +10901,21 @@ footer.footer {
   border-top: none;
   border-bottom-color: #007bff;
   border-left: none;
-  border-right: none;
+  border-right: none;  
 }
 
 .headerLi:hover {
   border-width: 3px;
 }
+
+.anchor-list-item {
+  color: black;
+}
+
+.anchor-list-item:hover {
+  color: black;
+}
+
 
 #jugadoresDespList, #dtsDespList, #clubesDespList {
   border-style: none;
@@ -10975,15 +10984,20 @@ footer.footer {
 }
 
 .headerWord {
-  margin-right: 200px;
+  margin-right: 80px;
+  color: #C7C8C9;
 }
 
 .headerWord:hover {
-  color: #007bff;
+  color: #007bff;  
 }
 
 .headerJugadores {
-  margin-left: 70px;
+  margin-left: 133px;
+}
+
+.userName {
+  color: white;
 }
 
 .userName:hover {
@@ -11005,8 +11019,8 @@ footer.footer {
 }
 
 .imagenJugador {
-  height: 200px;
-  width: 200px;
+  height: 233px;
+  width: 233px;
   margin-left: 33px;
 }
 
@@ -11019,6 +11033,23 @@ li {
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+}
+
 .div-jugadores {
   margin-bottom: 13px;
+}
+
+.btn-jugDePlantilla {
+  background-color: #D3D4D5;
+}
+
+.btn-jugDePlantilla:hover {
+  background-color: #6C757D;;
+}
+
+.li-imagen {
+  padding: 0 !important;
+  pointer-events: none !important;
 }

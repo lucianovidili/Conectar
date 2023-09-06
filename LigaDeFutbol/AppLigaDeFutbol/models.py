@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .choices import transferible_opciones
+from datetime import datetime
 
-# Create your models here.
 
 class Club(models.Model):
     nombre = models.CharField(max_length=40)
@@ -13,6 +13,7 @@ class Club(models.Model):
         return self.nombre
     
 class Jugador(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
     posicion = models.CharField(max_length=40)
@@ -33,7 +34,8 @@ class DirectorTecnico(models.Model):
     
 class Avatar(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    imagen = models.ImageField(upload_to='avatares', null=True, blank=True)
+    # imagen = models.ImageField(upload_to='imagenes', null=True, blank=True)
+    imagen = models.ImageField(upload_to='assets/img/avatares', null=True, blank=True)
     
     def __str__(self):
         return f"{self.user} - {self.imagen}"
@@ -42,3 +44,10 @@ class Oferta(models.Model):
     usuario_nombre = models.CharField(max_length=60)
     jugador = models.ForeignKey(Jugador, related_name='jugadores', on_delete=models.CASCADE, null=True)
     monto_ofrecido = models.IntegerField(verbose_name='Monto ofrecido (U$D)')
+    fecha_oferta = models.DateTimeField(default=datetime.now, blank=True)
+    
+    def __str__(self):
+        # jugador = Jugador.objects.get(pk=self.jugador_id)
+        # return f"{self.usuario_nombre} ofrece {self.monto_ofrecido} por {jugador.nombre} {jugador.apellido}"
+        # return f"{self.usuario_nombre} ofrece {self.monto_ofrecido} por {self.jugador.nombre} {self.jugador.apellido}"
+        return f"{self.usuario_nombre} ofrece {self.monto_ofrecido}"

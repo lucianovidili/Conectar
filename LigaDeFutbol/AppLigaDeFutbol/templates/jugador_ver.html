@@ -12,14 +12,36 @@
                 <p class="descJugador">Posición: {{jugador.posicion}}</p>
                 <p class="descJugador">Promedio: {{jugador.promedio}}</p>
                 <p class="descJugador">Pierna Hábil: {{jugador.pierna_habil}}</p>
-                <a class="btn btn-success btn-xs" href={% url 'ComprarJugador' jugador.pk %}>Ofertar</a>       
-                <a class="btn btn-secondary btn-xs" href={% url 'JugadoresTransferibles' %}>Volver</a>
+                <p class="descJugador">Transferible: {{jugador.transferible|capfirst}}</p>
+                {% if plantilla == 1 %}                  
+                  <a class="btn btn-secondary btn-xs" href={% url 'JugadoresPlantilla' %}>Volver</a>
+                {% else %}
+                  <a class="btn btn-success btn-xs" href={% url 'OfertarJugador' jugador.pk 1 %}>Ofertar</a>
+                  <a class="btn btn-secondary btn-xs" href={% url 'JugadoresTransferibles' %}>Volver</a>                  
+                {% endif %}                
             </td>
             <td>
                 <img class="img-fluid mb-3 imagenJugador" src={% static "assets/img/zlatan.jpg" %} alt="..." />
             </td>
         </tr>
     </table>
+
+    <br/>
+    <br/>
+
+    <h5 style="margin-bottom:15px;">Ofertas recibidas</h5>
+    
+    {% if ofertas %}
+      {% for oferta in ofertas %}
+        <li><b><i>{{oferta.usuario_nombre}}</i></b></li>
+        <li>{{oferta.jugador.nombre}} {{oferta.jugador.apellido}}</li>
+        <li>U$D {{oferta.monto_ofrecido}}</li>
+        <li><i><small>{{oferta.fecha_oferta}}</small></i></li>
+        <hr>
+      {% endfor %}
+    {% else %}
+      No se han recibido ofertas por este jugador      
+    {% endif %}
     
     {% comment %} <form method="post">
       {% csrf_token %}

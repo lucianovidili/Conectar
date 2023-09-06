@@ -1,0 +1,17 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+  <div class="divPrincipal">
+    <h5 style="margin-bottom: 15px;">Mi plantilla</h5>
+    {% for jugador in jugadores %}
+      {% if jugador.usuario == request.user %}
+        <div class="div-jugadores">
+          <li>{{jugador}}</li>
+          <a class="btn btn-primary btn-xs" href={% url 'VerJugador' jugador.pk 1 %}>Ver</a>
+          <a class="btn btn-warning btn-xs btn-editar" href={% url 'EditarJugador' jugador.pk %}>Editar</a>
+          <a class="btn btn-danger btn-xs" href={% url 'EliminarJugador' jugador.pk %}>Eliminar</a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

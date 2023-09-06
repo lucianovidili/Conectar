@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,37 +25,51 @@
     </head>
     <body>
         <!-- Navigation-->
-        <nav class="navbar navbar-light bg-light static-top navbarTop">
+        {% comment %} <nav class="navbar navbar-light bg-light static-top navbarTop"> {% endcomment %}
+        <nav class="navbar navbar-dark bg-dark static-top navbarTop">
             <ul id="main">
                 <div class="container">
                     {% comment %} <a class="navbar-brand" href={% url 'BuscarJugadoresPorNombre' %}>Buscar</a> {% endcomment %}
                     <li id="jugadoresDespList" class="headerWord headerJugadores">Jugadores
                         <ul class="drop" id="dropJugadores">
                             <div>
-                                <li class="headerLi"><a class="navbar-brand" href={% url 'JugadorFormulario' %}>Crear</a></li>
-                                <li class="headerLi"><a class="navbar-brand" href={% url 'JugadoresTransferibles' %}>Comprar</a></li>
-                                <li class="headerLi"><a class="navbar-brand" href="#">Vender</a></li>
-                                <li class="headerLi"><a class="navbar-brand" href="#">Ver plantilla</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href={% url 'JugadorFormulario' %}>Crear</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href={% url 'JugadoresTransferibles' %}>Comprar</a></li>
+                                {% comment %} <li class="headerLi"><a class="anchor-list-item" href="#">Vender</a></li> {% endcomment %}
+                                <li class="headerLi"><a class="navbar-brand anchor-list-item" href={% url 'JugadoresPlantilla' %}>Ver plantilla</a></li>
                             </div>
                         </ul>
                     </li>
                     <li id="dtsDespList" class="headerWord">DT's
                         <ul class="drop" id="dropDts">
                             <div>
-                                <li class="headerLi"><a class="navbar-brand" href={% url 'DTFormulario' %}>Crear</a></li>
-                                <li class="headerLi"><a class="navbar-brand" href="#">Contratar</a></li>
-                                <li class="headerLi"><a class="navbar-brand" href="#">Despedir</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href={% url 'DTFormulario' %}>Crear</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href="#">Contratar</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href="#">Despedir</a></li>
                             </div>
                         </ul>
                     </li>
                     <li id="clubesDespList" class="headerWord">Clubes
                         <ul class="drop" id="dropClubes">
                             <div>
-                                <li class="headerLi"><a class="navbar-brand" href={% url 'ClubFormulario' %}>Crear</a></li>
-                                <li class="headerLi"><a class="navbar-brand" href="#">Ofrecer</a></li>
-                                <li class="headerLi"><a class="navbar-brand" href="#">Renunciar</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href={% url 'ClubFormulario' %}>Crear</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href="#">Ofrecer</a></li>
+                                <li class="headerLi"><a class="anchor-list-item" href="#">Renunciar</a></li>
                             </div>
                         </ul>
+                    </li>
+                    <li>
+                        <a class="userName" href={% url 'EditarPerfil' %}>{{request.user.username}}</a>
+                    </li>
+                    {% if request.user.avatar %}
+                        <li class="li-imagen">
+                            {% with "/static"|add:request.user.avatar.imagen.url as url_avatar %}
+                                <img style="margin-top: -3px; margin-left: -103px; margin-right: 0;" src={{url_avatar}} alt="Avatar" height="50px;" />
+                            {% endwith %}                            
+                        </li>
+                    {% endif %}                    
+                    <li>
+                        <a style="margin-top: -3px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a>
                     </li>
                     
                     {% comment %} <a class="navbar-brand" href={% url 'ListarJugadores' %}>Listar</a> {% endcomment %}
@@ -64,14 +79,16 @@
                         <a class="btn btn-primary" href={% url 'Registro' %}>Registro</a>
                     {% else %}
                     {% endcomment %}
-                        <a class="navbar-brand userName" href={% url 'EditarPerfil' %}>{{request.user.username}}</a>
+                        {% comment %} <a class="navbar-brand headerWord" href={% url 'EditarPerfil' %}>{{request.user.username}}</a> {% endcomment %}
                         {% comment %} <a class="btn btn-primary" href={% url 'Logout' %}>Logout</a>
                     {% endif %}
                     {% endcomment %}
-                    {% if request.user.avatar %}
+
+                    {% comment %} {% if request.user.avatar %}
                         <img source="{{request.user.avatar.image.url}}" alt="" height="40px">
-                    {% endif %}
-                    {% comment %} <a class="btn btn-primary" href={% url 'Inicio' %}>INICIO</a> {% endcomment %}
+                    {% endif %} {% endcomment %}
+                    
+                    {% comment %} <a style="margin-top: -13px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a> {% endcomment %}
                 </div>                
             </ul>
         </nav>
@@ -87,7 +104,7 @@
         {% endblock content %}
         
         <!-- Footer-->
-        <footer class="footer bg-light">
+        <footer class="footer bg- ">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
@@ -100,7 +117,7 @@
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; 2023. Todos los derechos reservados.</p>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; {% now "Y" %}. Todos los derechos reservados.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
@@ -129,3 +146,4 @@
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
 </html>
+

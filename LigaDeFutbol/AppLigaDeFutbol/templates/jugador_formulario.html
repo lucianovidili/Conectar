@@ -1,5 +1,7 @@
 {% extends 'inicio.html' %}
 
+{% load static %}
+
 {% block content %}
   <div class="divPrincipal">
     <h5 style="margin-bottom: 15px;">{% if jugador %} Editar Jugador {% else %} Crear Jugador {% endif %}</h5>
@@ -9,6 +11,13 @@
         {{ form.as_table }}
       </table>
       <button class="btn btn-sm btn-success btn-guardar" type="submit">Guardar</button>
+      <a class="btn btn-sm btn-secondary btn-guardar" 
+        {% if jugador %}
+          href={% url 'JugadoresPlantilla' %}
+        {% else %}
+          href={% url 'Inicio' %}
+        {% endif %}
+      >Cancelar</a>
     </form>
   </div>
 {% endblock %}

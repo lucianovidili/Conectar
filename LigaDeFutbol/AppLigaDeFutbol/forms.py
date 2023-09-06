@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class JugadorFormulario(forms.ModelForm):
     class Meta:
         model = Jugador
-        fields = '__all__'
+        exclude = ['usuario']
     
 class DirectorTecnicoFormulario(forms.ModelForm):
     class Meta:

@@ -1,0 +1,23 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+  <div class="divPrincipal">
+    <h5 style="margin-bottom: 15px;">Ofertar por {{jugador.nombre}} {{jugador.apellido}}</h5>
+    <form method="post">
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+      </table>
+      <input id="jugador_id" name="jugador_id" type="hidden" value={{jugador.pk}}>
+      <input id="usuario_nombre" name="usuario_nombre" type="hidden" value={{request.user.username}}>
+      <button class="btn btn-sm btn-primary btn-guardar" type="submit">Enviar</button>
+      <a class="btn btn-sm btn-secondary btn-guardar" 
+      {% if ver_jugador == 1 %}
+        href={% url 'VerJugador' jugador.pk 0 %}
+      {% else %}
+        href={% url 'JugadoresTransferibles' %}
+      {% endif %}
+      >Cancelar</a>
+    </form>
+  </div>
+{% endblock %}
