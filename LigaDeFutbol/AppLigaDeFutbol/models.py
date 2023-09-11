@@ -20,6 +20,9 @@ class Jugador(models.Model):
     promedio = models.IntegerField(default=80, validators=[MaxValueValidator(100, "Asegúrese de ingresar un valor menor o igual a 100"), MinValueValidator(0, "Asegúrese de ingresar un valor mayor o igual a 0")])
     pierna_habil = models.CharField(max_length=40)
     transferible = models.CharField(max_length=10, choices=transferible_opciones, default='no', verbose_name='Transferible')
+    imagen = models.ImageField(upload_to='assets/img/jugadores', null=True, blank=True)
+    # imagen = models.ImageField(upload_to='imagenes/', null=True, blank=True)
+    # imagen = models.ImageField(upload_to="jugadores/", null=True, blank=True)
     
     def __str__(self):
         return self.nombre + " " + self.apellido + ", " + self.posicion + ", " + str(self.promedio) + "prom, " + self.pierna_habil
@@ -32,14 +35,6 @@ class DirectorTecnico(models.Model):
     def __str__(self):
         return self.apellido
     
-class Avatar(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # imagen = models.ImageField(upload_to='imagenes', null=True, blank=True)
-    imagen = models.ImageField(upload_to='assets/img/avatares', null=True, blank=True)
-    
-    def __str__(self):
-        return f"{self.user} - {self.imagen}"
-    
 class Oferta(models.Model):
     usuario_nombre = models.CharField(max_length=60)
     jugador = models.ForeignKey(Jugador, related_name='jugadores', on_delete=models.CASCADE, null=True)
@@ -51,3 +46,17 @@ class Oferta(models.Model):
         # return f"{self.usuario_nombre} ofrece {self.monto_ofrecido} por {jugador.nombre} {jugador.apellido}"
         # return f"{self.usuario_nombre} ofrece {self.monto_ofrecido} por {self.jugador.nombre} {self.jugador.apellido}"
         return f"{self.usuario_nombre} ofrece {self.monto_ofrecido}"
+    
+class Avatar(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='assets/img/avatares', null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.user} - {self.imagen}"
+
+# class ImagenJugador(models.Model):
+#     jugador = models.OneToOneField(Jugador, on_delete=models.CASCADE)
+#     imagen = models.ImageField(upload_to='assets/img/jugadores', null=True, blank=True)
+    
+#     def __str__(self):
+#         return f"{self.jugador} - {self.imagen}"

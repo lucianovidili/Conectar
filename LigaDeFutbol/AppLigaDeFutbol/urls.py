@@ -8,7 +8,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.inicio, name="Inicio"),
-    path('jugadorFormulario/', views.agregar_jugador, name="JugadorFormulario"),
+    # path('jugadorFormulario/', views.agregar_jugador, name="JugadorFormulario"),
+    path('jugadorFormulario/', views.crear_jugador.as_view(), name="JugadorFormulario"),
     path('dtFormulario/', views.agregar_director_tecnico, name="DTFormulario"),
     path('clubFormulario/', views.agregar_club, name="ClubFormulario"),
     path('buscarPorNombre/', views.buscar_jugadores_por_nombre, name='BuscarJugadoresPorNombre'),

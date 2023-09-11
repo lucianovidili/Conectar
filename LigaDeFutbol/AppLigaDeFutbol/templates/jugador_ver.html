@@ -21,7 +21,11 @@
                 {% endif %}                
             </td>
             <td>
-                <img class="img-fluid mb-3 imagenJugador" src={% static "assets/img/zlatan.jpg" %} alt="..." />
+                {% if jugador.imagen %}
+                  {% with "/static"|add:jugador.imagen.url as url_jugador %}
+                    <img class="img-fluid mb-3 imagenJugador" src={{url_jugador}} alt="Jugador Pic" />
+                  {% endwith %}
+                {% endif %}
             </td>
         </tr>
     </table>

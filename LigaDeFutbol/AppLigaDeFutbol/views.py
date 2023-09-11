@@ -10,17 +10,39 @@ from django.urls import reverse_lazy
 def inicio(request):
     return render(request, "inicio.html")
 
-def agregar_jugador(request):
-    if request.method == 'POST':
-        form = JugadorFormulario(request.POST)
-        form.instance.usuario = request.user
-        if form.is_valid():
-            form.save()
-            return redirect('Inicio')
-    else:
-        form = JugadorFormulario()
-    return render(request, 'jugador_formulario.html', {'form': form})
+# def agregar_jugador(request):
+#     if request.method == 'POST':
+#         form = JugadorFormulario(request.POST)
+#         form.instance.usuario = request.user
+#         # usuario.avatar.imagen = miFormulario.cleaned_data.get('imagen')
+#         # usuario.avatar.save()
+#         form.instance.imagen = request.POST.get('imagen')
+#         if form.is_valid():
+#             form.save()
+#             jugador = form.save()
+#             jugador.imagenjugador.imagen = request.POST.get('imagen')
+#             jugador.imagenjugador.save()
+#             return redirect('Inicio')
+#     else:
+#         form = JugadorFormulario()
+#     return render(request, 'jugador_formulario.html', {'form': form})
+
+class crear_jugador(CreateView):
+    model = Jugador
+    form_class = JugadorFormulario
+    success_url = reverse_lazy('Inicio')
+    template_name = 'jugador_formulario.html'
     
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        return super(crear_jugador, self).form_valid(form)
+
+class editar_jugador(UpdateView):
+    model = Jugador
+    template_name = 'jugador_formulario.html'
+    fields = ['nombre', 'apellido', 'posicion', 'promedio', 'pierna_habil', 'transferible', 'imagen']
+    success_url = reverse_lazy('JugadoresPlantilla')
+
 def ver_jugador(request, id, plantilla):
     jugador = Jugador.objects.get(pk=id)
     ofertas = Oferta.objects.filter(jugador__nombre=jugador.nombre)
@@ -57,12 +79,6 @@ class eliminar_jugador(DeleteView):
     template_name = 'jugador_eliminar.html'
     success_url = reverse_lazy('JugadoresPlantilla')
     
-class editar_jugador(UpdateView):
-    model = Jugador
-    template_name = 'jugador_formulario.html'
-    fields = ['nombre', 'apellido', 'posicion', 'promedio', 'pierna_habil', 'transferible']
-    success_url = reverse_lazy('JugadoresPlantilla')
-
 def agregar_director_tecnico(request):
     if request.method == 'POST':
         form = DirectorTecnicoFormulario(request.POST)
