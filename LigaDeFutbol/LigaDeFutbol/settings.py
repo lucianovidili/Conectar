@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'AppLigaDeFutbol',
-    'ckeditor',
+    'AppUsuarios',
 ]
 
 MIDDLEWARE = [
@@ -117,7 +117,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/appLiga/login'  # EL PATH no EL NOMBRE
+LOGIN_URL = '/usuarios/login'  # EL PATH no EL NOMBRE
 
 MEDIA_URL = ''
 # MEDIA_URL = '/imagenes/'

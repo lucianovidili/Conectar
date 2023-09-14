@@ -1,33 +1,22 @@
-from django.shortcuts import render, redirect
-from AppLigaDeFutbol.forms import JugadorFormulario, DirectorTecnicoFormulario, ClubFormulario, OfertaFormulario, JugadorBusquedaFormulario, UserEditForm
-from .models import Jugador, Oferta
-from django.views.generic import ListView
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect
+from .forms import JugadorFormulario, DirectorTecnicoFormulario, ClubFormulario, OfertaFormulario, JugadorBusquedaFormulario
+from .models import Jugador, Oferta
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
-def inicio(request):
-    return render(request, "inicio.html")
+# INICIO
 
-# def agregar_jugador(request):
-#     if request.method == 'POST':
-#         form = JugadorFormulario(request.POST)
-#         form.instance.usuario = request.user
-#         # usuario.avatar.imagen = miFormulario.cleaned_data.get('imagen')
-#         # usuario.avatar.save()
-#         form.instance.imagen = request.POST.get('imagen')
-#         if form.is_valid():
-#             form.save()
-#             jugador = form.save()
-#             jugador.imagenjugador.imagen = request.POST.get('imagen')
-#             jugador.imagenjugador.save()
-#             return redirect('Inicio')
-#     else:
-#         form = JugadorFormulario()
-#     return render(request, 'jugador_formulario.html', {'form': form})
+class inicio(TemplateView):
+    template_name = "inicio.html"
 
-class crear_jugador(CreateView):
+# JUGADOR
+
+class crear_jugador(LoginRequiredMixin, CreateView):
     model = Jugador
     form_class = JugadorFormulario
     success_url = reverse_lazy('Inicio')
@@ -37,17 +26,34 @@ class crear_jugador(CreateView):
         form.instance.usuario = self.request.user
         return super(crear_jugador, self).form_valid(form)
 
-class editar_jugador(UpdateView):
+class editar_jugador(LoginRequiredMixin, UpdateView):
     model = Jugador
     template_name = 'jugador_formulario.html'
     fields = ['nombre', 'apellido', 'posicion', 'promedio', 'pierna_habil', 'transferible', 'imagen']
     success_url = reverse_lazy('JugadoresPlantilla')
 
+class eliminar_jugador(LoginRequiredMixin, DeleteView):
+    model = Jugador
+    template_name = 'jugador_eliminar.html'
+    success_url = reverse_lazy('JugadoresPlantilla')
+
+class listar_jugadores_transferibles(LoginRequiredMixin, ListView):
+    template_name = 'jugadores_transferibles.html'
+    context_object_name = 'jugadores'
+    model = Jugador
+    
+class listar_jugadores_plantilla(LoginRequiredMixin, ListView):
+    template_name = 'jugadores_plantilla.html'
+    context_object_name = 'jugadores'
+    model = Jugador
+
+@login_required
 def ver_jugador(request, id, plantilla):
     jugador = Jugador.objects.get(pk=id)
     ofertas = Oferta.objects.filter(jugador__nombre=jugador.nombre)
     return render(request, 'jugador_ver.html', {'jugador': jugador, 'plantilla': plantilla, 'ofertas': ofertas})
 
+@login_required    
 def ofertar_jugador(request, id, ver_jugador):
     if request.method == 'POST':
         form = OfertaFormulario(request.POST)
@@ -64,21 +70,8 @@ def ofertar_jugador(request, id, ver_jugador):
         form.instance.jugador = jugador
     return render(request, 'jugador_ofertar.html', {'form': form, 'jugador': jugador, 'ver_jugador': ver_jugador})
 
-class listar_jugadores_transferibles(ListView):
-    template_name = 'jugadores_transferibles.html'
-    context_object_name = 'jugadores'
-    model = Jugador
-    
-class listar_jugadores_plantilla(ListView):
-    template_name = 'jugadores_plantilla.html'
-    context_object_name = 'jugadores'
-    model = Jugador
-    
-class eliminar_jugador(DeleteView):
-    model = Jugador
-    template_name = 'jugador_eliminar.html'
-    success_url = reverse_lazy('JugadoresPlantilla')
-    
+# DIRECTOR TÉCNICO
+
 def agregar_director_tecnico(request):
     if request.method == 'POST':
         form = DirectorTecnicoFormulario(request.POST)
@@ -89,6 +82,7 @@ def agregar_director_tecnico(request):
         form = DirectorTecnicoFormulario()
     return render(request, 'director_tecnico_formulario.html', {'form': form})
 
+# CLUB
 
 def agregar_club(request):
     if request.method == 'POST':
@@ -100,6 +94,7 @@ def agregar_club(request):
         form = ClubFormulario()
     return render(request, 'club_formulario.html', {'form': form})
 
+# BUSCAR JUGADORES
 
 def buscar_jugadores_por_nombre(request):
     jugadores = []
@@ -113,24 +108,4 @@ def buscar_jugadores_por_nombre(request):
             jugadores = Jugador.objects.filter(nombre__icontains=nombre)
 
     return render(request, 'jugadores_buscar.html', {'form': form, 'jugadores': jugadores})
-
-
-def editar_perfil(request):
-    usuario = request.user
-    if request.method == "POST":
-        miFormulario = UserEditForm(request.POST, request.FILES, instance=request.user)
-        if miFormulario.is_valid():
-            if miFormulario.cleaned_data.get('imagen'):
-                usuario.avatar.imagen = miFormulario.cleaned_data.get('imagen')
-                usuario.avatar.save()
-                
-            miFormulario.save()
-            return redirect('Inicio')
-    else:
-        miFormulario = UserEditForm(initial={'imagen': usuario.avatar.imagen}, instance=request.user)
-        return render(request, 'perfil_editar.html', {'miFormulario': miFormulario, 'usuario': usuario.username})
-
-# class CambiarContrasenia(LoginRequiredMixin, PasswordChangeView):
-#     template_name = 'cambiar_contrasenia.html'
-#     success_url = reverse_lazy('EditarPerfil')
     

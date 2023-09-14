@@ -58,52 +58,46 @@
                             </div>
                         </ul>
                     </li>
+                    
                     <li>
                         <a class="userName" href={% url 'EditarPerfil' %}>{{request.user.username}}</a>
                     </li>
-                    {% if request.user.avatar %}
+                    
+                    {% if request.user.avatar and request.user.avatar.imagen %}
                         <li class="li-imagen">
                             {% with "/static"|add:request.user.avatar.imagen.url as url_avatar %}
                                 <img style="margin-top: -3px; margin-left: -103px; margin-right: 0;" src={{url_avatar}} alt="Avatar" height="50px;" />
                             {% endwith %}
                         </li>
                     {% endif %}                    
+                    
                     <li>
-                        <a style="margin-top: -3px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a>
+                        <a style="margin-top: -3px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a>                        
                     </li>
                     
-                    {% comment %} <a class="navbar-brand" href={% url 'ListarJugadores' %}>Listar</a> {% endcomment %}
-                    {% comment %}
                     {% if not request.user.is_authenticated %}
-                        <a class="btn btn-primary" href={% url 'Login' %}>Login</a>
-                        <a class="btn btn-primary" href={% url 'Registro' %}>Registro</a>
+                        <li>
+                            <a class="anchor-primary" href={% url 'Login' %}>login</a>
+                        </li>
+                        <li>
+                            <a class="anchor-primary" href={% url 'Registro' %}>registro</a>
+                        </li>                        
                     {% else %}
-                    {% endcomment %}
-                        {% comment %} <a class="navbar-brand headerWord" href={% url 'EditarPerfil' %}>{{request.user.username}}</a> {% endcomment %}
-                        {% comment %} <a class="btn btn-primary" href={% url 'Logout' %}>Logout</a>
+                        <a class="anchor-primary" href={% url 'Logout' %}>logout</a>
                     {% endif %}
-                    {% endcomment %}
-
-                    {% comment %} {% if request.user.avatar %}
-                        <img source="{{request.user.avatar.image.url}}" alt="" height="40px">
-                    {% endif %} {% endcomment %}
-                    
-                    {% comment %} <a style="margin-top: -13px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a> {% endcomment %}
                 </div>                
             </ul>
         </nav>
-        <!-- Masthead-->
         
         <!-- Este es el bloque que va a cambiar -->
         {% block content %}
 
             <header class="header">
             </header>
-            <!-- Icons Grid-->
             
         {% endblock content %}
         
-        <!-- Footer-->
+        <!-- Pie de página -->
         <footer class="footer bg- ">
             <div class="container">
                 <div class="row">

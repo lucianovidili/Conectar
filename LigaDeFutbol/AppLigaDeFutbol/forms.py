@@ -9,6 +9,14 @@ class JugadorFormulario(forms.ModelForm):
         model = Jugador
         fields = ['nombre', 'apellido', 'posicion', 'promedio', 'pierna_habil', 'transferible', 'imagen']
         # exclude = ['usuario']
+        # widgets = {
+        #     'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'apellido' : forms.TextInput(attrs={'class': 'form-control'}),
+        #     'posicion' : forms.Select(attrs={'class': 'form-control'}),
+        #     'promedio' : forms.TextInput(attrs={'class': 'form-control'}),
+        #     'pierna_habil' : forms.TextInput(attrs={'class': 'form-control'}),
+        #     'transferible' : forms.Select(attrs={'class': 'form-control'}),                 
+        # }
     
 class DirectorTecnicoFormulario(forms.ModelForm):
     class Meta:
@@ -23,18 +31,6 @@ class ClubFormulario(forms.ModelForm):
 class JugadorBusquedaFormulario(forms.Form):
     nombre = forms.CharField(required=False)
     
-class UserEditForm(UserChangeForm):
-    contrasenia = None
-    email = forms.EmailField(label="E-mail: ")
-    first_name = forms.CharField(label="Nombre")
-    last_name = forms.CharField(label="Apellido")
-    imagen = forms.ImageField(label="Avatar", required=False)
-    
-    class Meta:
-        model = User
-        fields = ['email', 'first_name', 'last_name', 'imagen']
-        
-        
 class OfertaFormulario(forms.ModelForm):
     class Meta:
         model = Oferta

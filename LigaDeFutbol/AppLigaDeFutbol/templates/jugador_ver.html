@@ -38,22 +38,14 @@
     {% if ofertas %}
       {% for oferta in ofertas %}
         <li><b><i>{{oferta.usuario_nombre}}</i></b></li>
-        <li>{{oferta.jugador.nombre}} {{oferta.jugador.apellido}}</li>
+        {% comment %} <li>{{oferta.jugador.nombre}} {{oferta.jugador.apellido}}</li> {% endcomment %}
         <li>U$D {{oferta.monto_ofrecido}}</li>
         <li><i><small>{{oferta.fecha_oferta}}</small></i></li>
         <hr>
       {% endfor %}
     {% else %}
       No se han recibido ofertas por este jugador      
-    {% endif %}
-    
-    {% comment %} <form method="post">
-      {% csrf_token %}
-      <table>
-        {{ form.as_table }}
-      </table>
-      <button class="btn btn-sm btn-success btn-guardar" type="submit">Guardar</button>
-    </form> {% endcomment %}
+    {% endif %}    
     
   </div>
 {% endblock %}

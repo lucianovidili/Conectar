@@ -7,7 +7,8 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', views.inicio, name="Inicio"),
+    # path('', views.inicio, name="Inicio"),
+    path('', views.inicio.as_view(), name="Inicio"),
     # path('jugadorFormulario/', views.agregar_jugador, name="JugadorFormulario"),
     path('jugadorFormulario/', views.crear_jugador.as_view(), name="JugadorFormulario"),
     path('dtFormulario/', views.agregar_director_tecnico, name="DTFormulario"),
@@ -19,7 +20,6 @@ urlpatterns = [
     path('verJugador/<int:id>/<int:plantilla>', views.ver_jugador, name='VerJugador'),
     path('ofertarJugador/<int:id>/<int:ver_jugador>', views.ofertar_jugador, name='OfertarJugador'),
     path('editarJugador/<int:pk>', views.editar_jugador.as_view(), name='EditarJugador'),
-    path('editarPerfil/', views.editar_perfil, name='EditarPerfil'),    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
