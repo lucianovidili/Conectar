@@ -50,7 +50,7 @@ class listar_jugadores_plantilla(LoginRequiredMixin, ListView):
 @login_required
 def ver_jugador(request, id, plantilla):
     jugador = Jugador.objects.get(pk=id)
-    ofertas = Oferta.objects.filter(jugador__nombre=jugador.nombre)
+    ofertas = Oferta.objects.filter(jugador=jugador)
     return render(request, 'jugador_ver.html', {'jugador': jugador, 'plantilla': plantilla, 'ofertas': ofertas})
 
 @login_required    
@@ -61,6 +61,7 @@ def ofertar_jugador(request, id, ver_jugador):
         usuario_nombre = request.POST.get("usuario_nombre")
         form.instance.jugador = jugador
         form.instance.usuario_nombre = usuario_nombre
+        form.instance.usuario = request.user
         if form.is_valid():
             form.save()
             return redirect('Inicio')
@@ -69,6 +70,24 @@ def ofertar_jugador(request, id, ver_jugador):
         form = OfertaFormulario()
         form.instance.jugador = jugador
     return render(request, 'jugador_ofertar.html', {'form': form, 'jugador': jugador, 'ver_jugador': ver_jugador})
+
+@login_required    
+def rechazar_oferta(request, id):
+    oferta = Oferta.objects.get(pk=id)
+    oferta.estado = 'rechazada'
+    oferta.save()
+    return redirect('JugadoresPlantilla')    
+
+@login_required    
+def aceptar_oferta(request, id):
+    oferta = Oferta.objects.get(pk=id)
+    jugador = oferta.jugador
+    jugador.usuario = oferta.usuario
+    jugador.transferible = 'no'
+    jugador.save()
+    ofertas = Oferta.objects.filter(jugador=jugador)
+    ofertas.delete()
+    return redirect('JugadoresPlantilla') 
 
 # DIRECTOR TÉCNICO
 

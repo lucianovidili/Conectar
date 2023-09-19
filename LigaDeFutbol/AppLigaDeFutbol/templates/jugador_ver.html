@@ -37,10 +37,20 @@
     
     {% if ofertas %}
       {% for oferta in ofertas %}
-        <li><b><i>{{oferta.usuario_nombre}}</i></b></li>
-        {% comment %} <li>{{oferta.jugador.nombre}} {{oferta.jugador.apellido}}</li> {% endcomment %}
-        <li>U$D {{oferta.monto_ofrecido}}</li>
-        <li><i><small>{{oferta.fecha_oferta}}</small></i></li>
+        {% if oferta.estado == 'rechazada' %}
+          <li class="color-gris"><b><i>{{oferta.usuario_nombre}}</i></b></li>
+          <li class="color-gris">U$D {{oferta.monto_ofrecido}}</li>
+          <li class="color-gris"><i><small>{{oferta.fecha_oferta}}</small></i></li>
+          <li><i>Oferta rechazada</i></li>
+        {% else %}  
+          <li><b><i>{{oferta.usuario_nombre}}</i></b></li>
+          <li>U$D {{oferta.monto_ofrecido}}</li>
+          <li><i><small>{{oferta.fecha_oferta}}</small></i></li>
+          {% if plantilla == 1 %}
+            <a class="btn btn-primary btn-xs" href={% url 'AceptarOferta' oferta.pk %}>Aceptar</a>
+            <a class="btn btn-secondary btn-xs" href={% url 'RechazarOferta' oferta.pk %}>Rechazar</a>
+          {% endif %}
+        {% endif %}
         <hr>
       {% endfor %}
     {% else %}

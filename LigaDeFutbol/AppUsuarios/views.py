@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from .forms import UsuarioRegistroFormulario, UserEditForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from AppLigaDeFutbol.models import Avatar
+from .models import Avatar
 
 
 class logueo(LoginView):
