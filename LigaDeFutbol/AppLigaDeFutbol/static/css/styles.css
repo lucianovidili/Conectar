@@ -10829,8 +10829,8 @@ textarea.form-control-lg {
   position: relative;
   background: url("../assets/img/bg-masthead.jpg") no-repeat center center;
   background-size: cover;
-  padding-top: 20rem;
-  padding-bottom: 20rem;
+  padding-top: 14rem;
+  padding-bottom: 11.5rem;
 }
 .header:before {
   content: "";
@@ -10858,8 +10858,8 @@ textarea.form-control-lg {
 }
 
 footer.footer {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .btn-group-xs > .btn, .btn-xs {
@@ -10869,44 +10869,6 @@ footer.footer {
   border-radius: 3px;
 }
 
-/*********DISPLAY LISTS (Jugadores, DT's y Clubes*************/
-* {
-  box-sizing: border-box;
-}
-
-#main {
-  position: relative;
-  list-style: none;
-  font-size: 0;
-  display: inline-block;
-  padding: 0;
-}
-
-#main li {
-  font-size: 21px;
-  text-align: center;
-  display: inline-block;
-  position: relative;
-  padding: 15px 20px;
-  cursor: pointer;
-  z-index: 5;
-  min-width: 120px;
-}
-
-.headerLi {
-  height: 50px;
-  margin: 0;
-  border-style: solid;
-  border-width: 1px;
-  border-top: none;
-  border-bottom-color: #007bff;
-  border-left: none;
-  border-right: none;  
-}
-
-.headerLi:hover {
-  border-width: 3px;
-}
 
 .anchor-list-item {
   color: black;
@@ -10917,83 +10879,16 @@ footer.footer {
 }
 
 
-#jugadoresDespList, #dtsDespList, #clubesDespList {
+/* #jugadoresDespList, #dtsDespList, #clubesDespList {
   border-style: none;
-}
-
-.drop {
-  overflow: hidden;
-  list-style: none;
-  position: absolute;
-  padding: 0;
-  width: 100%;
-  left: 0;
-  top: 48px;
-  visibility: hidden;
-}
-
-.drop div {
-  -webkit-transform: translate(0, -100%);
-  -moz-transform: translate(0, -100%);
-  -ms-transform: translate(0, -100%);
-  transform: translate(0, -100%);
-  -webkit-transition: all 0.5s 0.1s;
-  -moz-transition: all 0.5s 0.1s;
-  -ms-transition: all 0.5s 0.1s;
-  transition: all 0.5s 0.1s;
-  position: relative;
-}
-
-.drop li {
-  display: block;
-  padding: 0;
-  width: 100%;
-  background: white;
-}
-
-#main li:nth-child(1):hover ul div {
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-
-#main li:nth-child(2):hover ul div {
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-
-#main li:nth-child(3):hover ul div {
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-
-#main li:nth-child(4):hover ul div {
-  -webkit-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-
-.navbarTop {
-  height: 77px;
-}
+} */
 
 .headerWord {
-  margin-right: 30px;
   color: #C7C8C9;
 }
 
 .headerWord:hover {
   color: #007bff;  
-}
-
-.headerJugadores {
-  margin-left: 170px;
 }
 
 .userName {
@@ -11002,11 +10897,6 @@ footer.footer {
 
 .userName:hover {
   color: #007bff;
-}
-
-/* Inicialmente las lista de Jugadores, DT's y Clubes están ocultas */
-#dropJugadores, #dropDts, #dropdropClubes {
-  visibility: hidden;
 }
 
 .divPrincipal {
@@ -11021,6 +10911,11 @@ footer.footer {
 .imagenJugador {
   height: 233px;
   margin-left: 33px;
+}
+
+.imagen-donacion {
+  width: 333px;
+  height: 333px;
 }
 
 .descJugador { 
@@ -11048,9 +10943,13 @@ a {
   background-color: #6C757D;;
 }
 
-.li-imagen {
+/* .li-imagen {
   padding: 0 !important;
   pointer-events: none !important;
+} */
+
+.anchor-login {
+  padding-right: 0.5rem;
 }
 
 .anchor-primary {
@@ -11059,9 +10958,143 @@ a {
 }
 
 .anchor-primary:hover {
-  color: white;
+  color: #0B5ED7;  
 }
 
 .color-gris {
   color:#6C757D;
+}
+
+.first-top-bar {
+  height: 38px;
+  background-color: #ECF4F9;
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  height: 76px;
+  padding: 0 33px;
+  /* background-color: #282b2e; */
+  background-color: white;
+}
+
+.column {
+  flex: 1;
+}
+
+.column-donations {
+  margin-left: 20rem !important;
+}
+
+.column-user {
+  /* flex: 1;
+  text-align: right !important; */
+  padding-right: 0.3rem;
+}
+
+.column-user-avatar {
+  /* flex: 1;
+  text-align: left !important; */
+  padding-left: 0.3rem;  
+}
+
+.column-mis-donaciones {
+  margin-left: 33px;
+}
+
+.column-header-image {
+  width: 333px;
+}
+
+.column-image {
+  width: 333px;
+  text-align: left;
+}
+
+.anchor {
+  color: #282b2e;  
+}
+
+.anchor:hover {
+  /* color: #6055d4; */
+  color: #0B5ED7;
+}
+
+.anchor-btn-exportar-excel {
+  background-color: #6055d4;
+  color: white;
+}
+
+.anchor-btn-exportar-excel:hover {
+  background-color: #4941a3;
+  color: white;
+}
+
+/* Estado active (cuando se mantiene presionado) */
+.anchor-btn-exportar-excel:active {
+  background-color: #4941a3 !important; /* Color más oscuro para active */
+  color: white !important;
+  border: 1px solid #4941a3 !important;
+}
+
+/* Estado focus (cuando el botón está enfocado) */
+.anchor-btn-exportar-excel:focus {
+  background-color: #6055d4; /* Igual al color normal para evitar cambios */
+  outline: none; /* Elimina el borde azul de enfoque */
+}
+
+.red-hat-display-regular {
+  font-family: "Red Hat Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-size: small;
+}
+
+.red-hat-display-regular-font {
+  font-family: "Red Hat Display", serif;
+  /* font-optical-sizing: auto;
+  font-style: normal; */
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #007bff; /* Color del texto */
+  text-decoration: none; /* Subrayado como un enlace */
+  cursor: pointer; /* Manito como un enlace */
+  padding: 0; /* Quitar relleno */
+}
+.btn-link:hover {
+  color: #0B5ED7; /* Cambiar color al pasar el mouse */  
+}
+
+.donation-section {
+  padding: 2rem;
+  margin-top: 1.5rem;
+}
+
+.container-plus {
+  width: 95%; /* Ajusta el tamaño del div */
+  margin: 0 auto; /* Esto centra el div horizontalmente */
+  padding: 15px; /* Espaciado interno */
+}
+
+.section-top {
+  width: 100%; /* Se asegura de que la sección ocupe todo el ancho disponible */  
+}
+
+.whatsapp-icon {
+  width: 33px;
+  height: 33px;
+  cursor: pointer;
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease; /* Transición suave */
+}
+
+.whatsapp-icon:hover {
+  transform: scale(1.2); /* Aumenta el tamaño al 120% */
 }

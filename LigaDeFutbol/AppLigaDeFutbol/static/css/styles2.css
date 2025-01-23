@@ -1,0 +1,35 @@
+/* Reset general */
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center; /* Centra el navbar horizontalmente en la pantalla */
+  height: 100vh;           /* Altura completa de la ventana */
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;              /* Ancho del contenedor */
+  padding: 10px 80px;
+  color: black;
+}
+
+/* Lista de enlaces */
+.navbar-links {
+  display: flex;                  /* Activa Flexbox */
+  justify-content: space-around;  /* Espacios iguales entre elementos y los bordes del contenedor */
+  align-items: center;            /* Centra verticalmente los elementos */
+  list-style: none;               /* Sin puntos de lista */
+  margin: 0;
+  padding: 0;
+}
+
+/* Enlaces */
+.navbar-links li {
+  margin: 0;
+}
+
+.navbar-links a {
+  color: black;          /* Texto en blanco */
+  text-decoration: none;   /* Sin subrayado */
+  font-size: 18px;         /* Tamaño de fuente */
+}

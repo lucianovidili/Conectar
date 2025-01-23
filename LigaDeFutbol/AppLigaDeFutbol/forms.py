@@ -1,5 +1,5 @@
 from django import forms
-from .models import Jugador, DirectorTecnico, Club, Oferta
+from .models import Jugador, Oferta
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 
@@ -7,7 +7,16 @@ from django.contrib.auth.models import User
 class JugadorFormulario(forms.ModelForm):
     class Meta:
         model = Jugador
-        fields = ['nombre', 'apellido', 'posicion', 'promedio', 'pierna_habil', 'transferible', 'imagen']
+        fields = [
+            "nombre",
+            "apellido",
+            "descripcion",
+            "posicion",
+            "promedio",
+            "pierna_habil",
+            "transferible",
+            "imagen",
+        ]
         # exclude = ['usuario']
         # widgets = {
         #     'nombre': forms.TextInput(attrs={'class': 'form-control'}),
@@ -15,23 +24,27 @@ class JugadorFormulario(forms.ModelForm):
         #     'posicion' : forms.Select(attrs={'class': 'form-control'}),
         #     'promedio' : forms.TextInput(attrs={'class': 'form-control'}),
         #     'pierna_habil' : forms.TextInput(attrs={'class': 'form-control'}),
-        #     'transferible' : forms.Select(attrs={'class': 'form-control'}),                 
+        #     'transferible' : forms.Select(attrs={'class': 'form-control'}),
         # }
-    
-class DirectorTecnicoFormulario(forms.ModelForm):
-    class Meta:
-        model = DirectorTecnico
-        fields = '__all__'
-        
-class ClubFormulario(forms.ModelForm):
-    class Meta:
-        model = Club
-        fields = '__all__'
-        
+
+
+# class DirectorTecnicoFormulario(forms.ModelForm):
+#     class Meta:
+#         model = DirectorTecnico
+#         fields = "__all__"
+
+
+# class ClubFormulario(forms.ModelForm):
+#     class Meta:
+#         model = Club
+#         fields = "__all__"
+
+
 class JugadorBusquedaFormulario(forms.Form):
     nombre = forms.CharField(required=False)
-    
+
+
 class OfertaFormulario(forms.ModelForm):
     class Meta:
         model = Oferta
-        fields = ['monto_ofrecido']
+        fields = ["monto_ofrecido"]

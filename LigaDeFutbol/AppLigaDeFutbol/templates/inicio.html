@@ -7,9 +7,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Ligas de Fútbol</title>
+        <title>Donaciones</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        {% comment %} <link rel="icon" type="image/x-icon" href="assets/favicon.ico" /> {% endcomment %}
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
         <!-- Google fonts-->
@@ -22,96 +23,82 @@
 
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href={% static 'css/styles.css' %} rel="stylesheet" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     </head>
     <body>
-        <!-- Navigation-->
-        {% comment %} <nav class="navbar navbar-light bg-light static-top navbarTop"> {% endcomment %}
-        <nav class="navbar navbar-dark bg-dark static-top navbarTop">
-            <ul id="main">
-                <div class="container">
-                    {% comment %} <a class="navbar-brand" href={% url 'BuscarJugadoresPorNombre' %}>Buscar</a> {% endcomment %}
-                    <li id="jugadoresDespList" class="headerWord headerJugadores">Jugadores
-                        <ul class="drop" id="dropJugadores">
-                            <div>
-                                <li class="headerLi"><a class="anchor-list-item" href={% url 'JugadorFormulario' %}>Crear</a></li>
-                                <li class="headerLi"><a class="anchor-list-item" href={% url 'JugadoresTransferibles' %}>Comprar</a></li>
-                                {% comment %} <li class="headerLi"><a class="anchor-list-item" href="#">Vender</a></li> {% endcomment %}
-                                <li class="headerLi"><a class="navbar-brand anchor-list-item" href={% url 'JugadoresPlantilla' %}>Ver plantilla</a></li>
-                            </div>
-                        </ul>
-                    </li>
-                    <li id="dtsDespList" class="headerWord">DT's
-                        <ul class="drop" id="dropDts">
-                            <div>
-                                <li class="headerLi"><a class="anchor-list-item" href={% url 'DTFormulario' %}>Crear</a></li>
-                                <li class="headerLi"><a class="anchor-list-item" href="#">Contratar</a></li>
-                                <li class="headerLi"><a class="anchor-list-item" href="#">Despedir</a></li>
-                            </div>
-                        </ul>
-                    </li>
-                    <li id="clubesDespList" class="headerWord">Clubes
-                        <ul class="drop" id="dropClubes">
-                            <div>
-                                <li class="headerLi"><a class="anchor-list-item" href={% url 'ClubFormulario' %}>Crear</a></li>
-                                <li class="headerLi"><a class="anchor-list-item" href="#">Ofrecer</a></li>
-                                <li class="headerLi"><a class="anchor-list-item" href="#">Renunciar</a></li>
-                            </div>
-                        </ul>
-                    </li>
-                    
-                    <li>
-                        <a class="userName" href={% url 'EditarPerfil' %}>{{request.user.username}}</a>
-                    </li>
-                    
-                    {% if request.user.avatar and request.user.avatar.imagen %}
-                        <li class="li-imagen">
-                            {% with "/static"|add:request.user.avatar.imagen.url as url_avatar %}
-                                <img style="margin-top: -3px; margin-left: -103px; margin-right: 0;" src={{url_avatar}} alt="Avatar" height="50px;" />
-                            {% endwith %}
-                        </li>
-                    {% endif %}                    
-                    
-                    <li>
-                        <a style="margin-top: -3px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a>                        
-                    </li>
-                    
-                    {% if not request.user.is_authenticated %}
-                        <li>
-                            <a class="anchor-primary" href={% url 'Login' %}>login</a>
-                        </li>
-                        <li>
-                            <a class="anchor-primary" href={% url 'Registro' %}>registro</a>
-                        </li>                        
-                    {% else %}
-                        <a class="anchor-primary" href={% url 'Logout' %}>logout</a>
-                    {% endif %}
-                </div>                
-            </ul>
-        </nav>
+        <div class="first-top-bar"></div>
+        <div class="top-bar bg-light">
+            <div class="column">
+                <a href={% url 'Inicio' %}>
+                    <img src={% static "assets/img/logo-conectar.png" %} alt="Logo" height="55px;" />                
+                </a>
+            </div>
+            <div class="column column-donations">
+                <a class="anchor red-hat-display-regular" href={% url 'ListaDonaciones' %}>BUSCAR DONACIONES</a>
+            </div>
+            <div class="column">
+                <a class="anchor red-hat-display-regular" href={% url 'CrearEditarDonacion' %}>DONAR</a>
+            </div>
+            <div class="column-user">
+                <a class="anchor red-hat-display-regular" href={% url 'EditarPerfil' %}>{{request.user.username}}</a>
+            </div>
+            
+            {% if request.user.avatar and request.user.avatar.imagen %}
+                <div class="column-user-avatar li-imagen">
+                    {% with "/static"|add:request.user.avatar.imagen.url as url_avatar %}
+                        <img src={{url_avatar}} alt="Avatar" height="50px;" />
+                    {% endwith %}
+                </div>
+            {% endif %}
+            
+            <div class="column column-mis-donaciones">
+                <a class="anchor red-hat-display-regular" href={% url 'ListaMisDonaciones' request.user.id 1 %}>MIS DONACIONES</a>
+            </div>
+            
+            
+            {% comment %} <div class="column"><a style="margin-top: -3px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a></div> {% endcomment %}
+            <div class="column">
+                <a class="btn btn-primary btn-sm red-hat-display-regular" href={% url 'Inicio' %}>Inicio</a>
+            </div>
         
-        <!-- Este es el bloque que va a cambiar -->
+            {% if not request.user.is_authenticated %}
+                <div><a class="column anchor-primary anchor-login red-hat-display-regular" href={% url 'Login' %}>login</a></div>
+                <div><a class="column anchor-primary red-hat-display-regular" href={% url 'Registro' %}>registro</a></div>                        
+            {% else %}
+                <form method="POST" action="{% url 'Logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-link red-hat-display-regular">logout</button>
+                </form>
+                {% comment %} <div><a class="column anchor-primary red-hat-display-regular" href={% url 'Logout' %}>logout</a></div> {% endcomment %}
+            {% endif %}
+            
+        </div>
+        
+        <!-- Este es el bloque que se va a cambiar -->
         {% block content %}
 
-            <header class="header">
-            </header>
+            <header class="header"></header>
             
         {% endblock content %}
         
         <!-- Pie de página -->
-        <footer class="footer bg- ">
+        <footer class="footer bg-light">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                         <ul class="list-inline mb-2">
-                            <li class="list-inline-item"><a href="#!">Acerca de mí</a></li>
+                            <li class="list-inline-item"><a class="red-hat-display-regular" href="#!">Acerca de mí</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Contact</a></li>
+                            <li class="list-inline-item"><a class="red-hat-display-regular" href="#!">Contact</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
+                            <li class="list-inline-item"><a class="red-hat-display-regular" href="#!">Terms of Use</a></li>
                             <li class="list-inline-item">⋅</li>
-                            <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+                            <li class="list-inline-item"><a class="red-hat-display-regular" href="#!">Privacy Policy</a></li>
                         </ul>
-                        <p class="text-muted small mb-4 mb-lg-0">&copy; {% now "Y" %}. Todos los derechos reservados.</p>
+                        <p class="text-muted small mb-4 mb-lg-0 red-hat-display-regular">&copy; {% now "Y" %}. Todos los derechos reservados.</p>
                     </div>
                     <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
                         <ul class="list-inline mb-0">
@@ -131,13 +118,10 @@
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
         <script src={% static "js/scripts.js" %}></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- Core theme JS-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
     </body>
 </html>
 
