@@ -13,6 +13,17 @@ from datetime import datetime
 #         return self.nombre
 
 
+class Donacion(models.Model):
+    titulo = models.CharField(max_length=90, null=False, blank=False)
+    descripcion = models.TextField(blank=True, null=True)
+    imagen = models.ImageField(upload_to="assets/img/donaciones", null=True, blank=True)
+    propietario = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True
+    )
+    # telefono = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    # telefono = models.IntegerField()
+
+
 class Jugador(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     nombre = models.CharField(max_length=30)

@@ -4,7 +4,7 @@
 
 {% block content %}
   <div class="divPrincipal">
-    <h5 style="margin-bottom: 15px;">{% if jugador %} Editar Jugador {% else %} Crear Jugador {% endif %}</h5>
+    <h5 style="margin-bottom: 15px;">{% if donacion %} Editar Donación {% else %} Crear Donación {% endif %}</h5>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <table>
@@ -12,7 +12,7 @@
       </table>
       <button class="btn btn-sm btn-success btn-guardar" type="submit">Guardar</button>
       <a class="btn btn-sm btn-secondary btn-guardar" 
-        {% if jugador %}
+        {% if donacion %}
           href={% url 'JugadoresPlantilla' %}
         {% else %}
           href={% url 'Inicio' %}

@@ -5,10 +5,11 @@ from .forms import (
     JugadorFormulario,
     # DirectorTecnicoFormulario,
     # ClubFormulario,
+    DonacionFormulario,
     OfertaFormulario,
     JugadorBusquedaFormulario,
 )
-from .models import Jugador, Oferta
+from .models import Jugador, Donacion, Oferta
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,17 +25,17 @@ class inicio(TemplateView):
     template_name = "inicio.html"
 
 
-# JUGADOR
+# DONACIÓN
 
 
 class crear_donacion(LoginRequiredMixin, CreateView):
-    model = Jugador
-    form_class = JugadorFormulario
+    model = Donacion
+    form_class = DonacionFormulario
     success_url = reverse_lazy("Inicio")
     template_name = "crear_editar_donacion.html"
 
     def form_valid(self, form):
-        form.instance.usuario = self.request.user
+        form.instance.propietario = self.request.user
         return super(crear_donacion, self).form_valid(form)
 
 
@@ -62,20 +63,20 @@ class eliminar_jugador(LoginRequiredMixin, DeleteView):
 # class listar_jugadores_transferibles(LoginRequiredMixin, ListView):
 def listar_donaciones(request):
     if (
-        True
+        False
         # request.method == "GET"
         # and request.headers.get("X-Requested-With") == "XMLHttpRequest"
     ):
         page_number = request.GET.get("page", 1)
-        jugadores = Jugador.objects.all().order_by("id")
-        paginator = Paginator(jugadores, 5)  # 5 jugadores por página
+        donaciones = Donacion.objects.all().order_by("id")
+        paginator = Paginator(donaciones, 5)  # 5 jugadores por página
 
         try:
             page = paginator.page(page_number)
         except:
-            return JsonResponse({"jugadores": [], "has_more": False})
+            return JsonResponse({"donaciones": [], "has_more": False})
 
-        jugadores_data = [
+        donaciones_data = [
             {
                 "id": jugador.pk,
                 "nombre": jugador.nombre,
@@ -85,10 +86,11 @@ def listar_donaciones(request):
             for jugador in page
         ]
 
-        # return JsonResponse({"jugadores": jugadores_data, "has_more": page.has_next()})
-        return render(request, "lista_donaciones.html", {"jugadores": jugadores})
+        # return JsonResponse({"jugadores": donaciones_data, "has_more": page.has_next()})
+        return render(request, "lista_donaciones.html", {"donaciones": donaciones})
 
-    return render(request, "lista_donaciones.html", {"jugadores": jugadores})
+    donaciones = Donacion.objects.all().order_by("id")
+    return render(request, "lista_donaciones.html", {"donaciones": donaciones})
 
 
 @login_required

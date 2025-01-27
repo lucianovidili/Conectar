@@ -1,7 +1,17 @@
 from django import forms
-from .models import Jugador, Oferta
+from .models import Jugador, Donacion, Oferta
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
+
+
+class DonacionFormulario(forms.ModelForm):
+    class Meta:
+        model = Donacion
+        fields = [
+            "titulo",
+            "descripcion",
+            "imagen",
+        ]
 
 
 class JugadorFormulario(forms.ModelForm):

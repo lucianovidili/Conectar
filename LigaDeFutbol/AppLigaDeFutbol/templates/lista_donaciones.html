@@ -55,10 +55,10 @@
               </thead>
               <tbody id="tableBody">
                 {% comment %} Acá se muestran todas las donaciones disponibles {% endcomment %}
-                {% for jugador in jugadores %}
+                {% for donacion in donaciones %}
                   <tr>
                     <td class="py-4 px-6">
-                      <p class="mb-0">{{jugador.nombre}} {{jugador.apellido}}</p>
+                      <p class="mb-0">{{donacion.titulo}}</p>
                     </td>
                     {% comment %} <td class="py-4 px-6"> {% endcomment %}
                     <td class="py-4 px-6">
@@ -69,10 +69,10 @@
                     </td>
                     <td class="py-4 px-6 column-image">
                       {% comment %} <img class="me-2 img-fluid" style="width: 100px; height: 100px" src="https://images.unsplash.com/photo-1559893088-c0787ebfc084?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="alt"> {% endcomment %}
-                      {% if jugador.imagen %}
-                        {% with "/static"|add:jugador.imagen.url as url_jugador %}
+                      {% if donacion.imagen %}
+                        {% with "/static"|add:donacion.imagen.url as url_donacion %}
                           {% comment %} <img class="img-fluid mb-3 rounded imagen-donacion" src={{url_jugador}} alt="Donacion" /> {% endcomment %}
-                          <img class="img-fluid mb-3 rounded" style="max-width: 100%; height: auto;" src="{{ url_jugador }}" alt="Donacion" />
+                          <img class="img-fluid mb-3 rounded" style="max-width: 100%; height: auto;" src="{{ url_donacion }}" alt="Donacion" />
                         {% endwith %}
                       {% else %}
                         <img src={% static "assets/img/sin-imagen.jpg" %} alt="Sin imagen" style="width: 123px; height: auto;" />                      
@@ -80,10 +80,10 @@
                     </td>
                     {% if son_propias != 1 %}
                       <td class="py-4 px-6">
-                        <p class="mb-0">{{jugador.nombre}} {{jugador.apellido}}</p>
+                        <p class="mb-0">{{donacion.propietario}}</p>
                       </td>
                       <td class="py-4 px-6">
-                        <p class="mb-0">5491168158090</p>
+                        <p class="mb-0">{{donacion.propietario.telefono}}</p>
                       </td>
                       <td class="py-4 px-6">
                         <a onclick="handleWhatsAppClick(this)">

@@ -1,0 +1,6 @@
+color "mis donaciones" (violetita)
+#6055d4
+
+color "mis donaciones" (violetita más oscuro: hover)
+#4941a3
+
