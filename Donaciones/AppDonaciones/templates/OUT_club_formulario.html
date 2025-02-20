@@ -1,0 +1,14 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+  <div class="divPrincipal">
+    <h5 style="margin-bottom: 15px;">Crear Club</h5>
+    <form method="post">
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+    </table>
+      <button class="btn btn-sm btn-success btn-guardar" type="submit">Guardar</button>
+    </form>
+  </div>
+{% endblock %}

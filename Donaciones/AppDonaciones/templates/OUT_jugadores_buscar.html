@@ -1,0 +1,28 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+  <div style="margin-left:10px; margin-top:10px;">
+    <h5 style="margin-bottom: 15px;">Buscar Jugadores por Nombre</h5>
+    <form method="get" action="">
+        <table>
+            {{ form.as_table }}
+        </table>
+        <button class="btn btn-sm btn-primary" type="submit">Buscar</button>
+    </form>
+    
+    {% if jugadores %}
+        <h5 style="margin-top: 27px;">Resultados de la búsqueda:</h5>
+        <ul>
+            {% for jugador in jugadores %}
+            <li>{{ jugador.nombre }} {{ jugador.apellido }} - Pierna Hábil: {{ jugador.pierna_habil }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h5 style="margin-top: 27px;">No se encontraron resultados</h5>
+    {% endif %}
+  </div>
+{% endblock %}
+
+    
+</body>
+</html>
