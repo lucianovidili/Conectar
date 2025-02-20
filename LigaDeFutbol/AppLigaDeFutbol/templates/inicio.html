@@ -39,42 +39,12 @@
             <div class="column column-donations">
                 <a class="anchor red-hat-display-regular" href={% url 'ListaDonaciones' %}>BUSCAR DONACIONES</a>
             </div>
-            <div class="column">
+            <div class="column column-donar">
                 <a class="anchor red-hat-display-regular" href={% url 'CrearEditarDonacion' %}>DONAR</a>
             </div>
-            <div class="column-user">
-                <a class="anchor red-hat-display-regular" href={% url 'EditarPerfil' %}>{{request.user.username}}</a>
-            </div>
-            
-            {% if request.user.avatar and request.user.avatar.imagen %}
-                <div class="column-user-avatar li-imagen">
-                    {% with "/static"|add:request.user.avatar.imagen.url as url_avatar %}
-                        <img src={{url_avatar}} alt="Avatar" height="50px;" />
-                    {% endwith %}
-                </div>
-            {% endif %}
-            
-            <div class="column column-mis-donaciones">
-                <a class="anchor red-hat-display-regular" href={% url 'ListaMisDonaciones' request.user.id 1 %}>MIS DONACIONES</a>
-            </div>
-            
-            
-            {% comment %} <div class="column"><a style="margin-top: -3px;" class="btn btn-primary btn-sm" href={% url 'Inicio' %}>Inicio</a></div> {% endcomment %}
             <div class="column">
                 <a class="btn btn-primary btn-sm red-hat-display-regular" href={% url 'Inicio' %}>Inicio</a>
-            </div>
-        
-            {% if not request.user.is_authenticated %}
-                <div><a class="column anchor-primary anchor-login red-hat-display-regular" href={% url 'Login' %}>login</a></div>
-                <div><a class="column anchor-primary red-hat-display-regular" href={% url 'Registro' %}>registro</a></div>                        
-            {% else %}
-                <form method="POST" action="{% url 'Logout' %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-link red-hat-display-regular">logout</button>
-                </form>
-                {% comment %} <div><a class="column anchor-primary red-hat-display-regular" href={% url 'Logout' %}>logout</a></div> {% endcomment %}
-            {% endif %}
-            
+            </div>            
         </div>
         
         <!-- Este es el bloque que se va a cambiar -->

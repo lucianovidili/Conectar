@@ -13,27 +13,23 @@
               <h5 class="red-hat-display-regular-font">{% if donacion %} Editar Donación {% else %} Crear Donación {% endif %}</h5>
               <p class="small text-secondary red-hat-display-regular-font">{% if donacion %} Edita tu donación {% else %} Sumar una nueva donación disponible {% endif %}</p>
               {% if donacion %}
-                <form method="post" enctype="multipart/form-data" onsubmit="return validarContrasenia(event, '{{ donacion.contrasenia }}')">
+                <form method="post" onsubmit="return validarContrasenia(event, '{{ donacion.contrasenia }}')">
                   {% csrf_token %}                
                   <table>
                     {% for campo in form %}
                         <tr>
-                            <td style="margin-top: 25px;">{{ campo.label_tag }}</td>
+                            <td>{{ campo.label_tag }}</td>
                             <td>
-                              {% if campo.name == "contrasenia" %}
-                                  
-                                <!-- Campo oculto que Django sí procesa -->
-                                {{ campo.as_hidden }}
-                                
-                                <input id="contrasenia" name="contrasenia" class="form-control" placeholder="Ingresa la contraseña con la que creaste esta donación" oninput="inputChange()">
-                                <small id="error-msg" style="color: red; display: none;">La contraseña no es válida</small>
-                                <br>
-                                <script>
-                                    document.getElementsByName("contrasenia")[0].setAttribute("placeholder", "Ingresa la contraseña con la que creaste esta donación");
-                                </script>
-                              {% else %}
-                                {{ campo }}
-                              {% endif %}
+                                {% if campo.name == "contrasenia" %}
+                                    {{ campo }}
+                                    <script>
+                                        document.getElementsByName("contrasenia")[0].setAttribute("placeholder", "Ingresa la contraseña con la que creaste esta donación");
+                                    </script>
+                                    <small id="error-msg" style="color: red; display: none;">La contraseña no es válida</small>
+                                    <br>
+                                {% else %}
+                                    {{ campo }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

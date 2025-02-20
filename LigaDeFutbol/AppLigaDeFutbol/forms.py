@@ -1,7 +1,14 @@
 from django import forms
-from .models import Jugador, Donacion, Oferta
+from .models import Jugador, Donacion
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
+from django.forms.widgets import ClearableFileInput
+
+
+class CustomClearableFileInput(ClearableFileInput):
+    clear_checkbox_label = "Borrar"
+    initial_text = "Imagen actual"
+    input_text = "Cambiar"
 
 
 class DonacionFormulario(forms.ModelForm):
@@ -11,7 +18,23 @@ class DonacionFormulario(forms.ModelForm):
             "titulo",
             "descripcion",
             "imagen",
+            "propietario",
+            "telefono",
+            "contrasenia",
         ]
+        widgets = {
+            "titulo": forms.TextInput(attrs={"class": "form-control"}),
+            "descripcion": forms.Textarea(attrs={"class": "form-control"}),
+            "propietario": forms.TextInput(attrs={"class": "form-control"}),
+            "telefono": forms.NumberInput(attrs={"class": "form-control"}),
+            "contrasenia": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Se solicitará al intentar borrar o editar esta donación",
+                }
+            ),
+            "imagen": CustomClearableFileInput(attrs={"class": "form-control"}),
+        }
 
 
 class JugadorFormulario(forms.ModelForm):
@@ -38,23 +61,11 @@ class JugadorFormulario(forms.ModelForm):
         # }
 
 
-# class DirectorTecnicoFormulario(forms.ModelForm):
-#     class Meta:
-#         model = DirectorTecnico
-#         fields = "__all__"
-
-
-# class ClubFormulario(forms.ModelForm):
-#     class Meta:
-#         model = Club
-#         fields = "__all__"
-
-
 class JugadorBusquedaFormulario(forms.Form):
     nombre = forms.CharField(required=False)
 
 
-class OfertaFormulario(forms.ModelForm):
-    class Meta:
-        model = Oferta
-        fields = ["monto_ofrecido"]
+# class OfertaFormulario(forms.ModelForm):
+#     class Meta:
+#         model = Oferta
+#         fields = ["monto_ofrecido"]

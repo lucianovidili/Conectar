@@ -16,12 +16,16 @@ from datetime import datetime
 class Donacion(models.Model):
     titulo = models.CharField(max_length=90, null=False, blank=False)
     descripcion = models.TextField(blank=True, null=True)
-    imagen = models.ImageField(upload_to="assets/img/donaciones", null=True, blank=True)
-    propietario = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True
+    imagen = models.ImageField(
+        upload_to="assets/img/donaciones",
+        null=True,
+        blank=True,
     )
-    # telefono = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    # telefono = models.IntegerField()
+    propietario = models.CharField(max_length=90, null=False, blank=False)
+    telefono = models.IntegerField(blank=False, null=False)
+    contrasenia = models.CharField(
+        max_length=50, null=False, blank=False, verbose_name="Contraseña"
+    )
 
 
 class Jugador(models.Model):
@@ -71,17 +75,17 @@ class Jugador(models.Model):
 #         return self.apellido
 
 
-class Oferta(models.Model):
-    usuario_nombre = models.CharField(max_length=60)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    jugador = models.ForeignKey(
-        Jugador, related_name="jugadores", on_delete=models.CASCADE, null=True
-    )
-    monto_ofrecido = models.IntegerField(verbose_name="Monto ofrecido (U$D)")
-    fecha_oferta = models.DateTimeField(default=datetime.now, blank=True)
-    estado = models.CharField(
-        max_length=13, choices=estado_oferta_opciones, default="no_contestada"
-    )
+# class Oferta(models.Model):
+#     usuario_nombre = models.CharField(max_length=60)
+#     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+#     jugador = models.ForeignKey(
+#         Jugador, related_name="jugadores", on_delete=models.CASCADE, null=True
+#     )
+#     monto_ofrecido = models.IntegerField(verbose_name="Monto ofrecido (U$D)")
+#     fecha_oferta = models.DateTimeField(default=datetime.now, blank=True)
+#     estado = models.CharField(
+#         max_length=13, choices=estado_oferta_opciones, default="no_contestada"
+#     )
 
-    def __str__(self):
-        return f"{self.usuario_nombre} ofrece {self.monto_ofrecido}"
+#     def __str__(self):
+#         return f"{self.usuario_nombre} ofrece {self.monto_ofrecido}"

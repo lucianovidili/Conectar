@@ -1,0 +1,37 @@
+{% extends 'inicio.html' %}
+
+{% load static %}
+
+{% block content %}
+<section class="py-8 section-top">
+  <div class="container-plus">
+    <div class="rounded">
+      <div class="pt-4 bg-white rounded shadow donation-section">
+        <div class="px-6">
+          <div class="row align-items-center justify-content-between">
+            <div class="col-12 col-md-auto mb-4 mb-md-0">
+              <h5 class="red-hat-display-regular-font">{% if donacion %} Editar Donación {% else %} Crear Donación {% endif %}</h5>
+              <p class="small text-secondary red-hat-display-regular-font">{% if donacion %} Edita tu donación {% else %} Sumar una nueva donación disponible {% endif %}</p>
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                  {{form.as_table}}
+                </table>
+                <button class="btn btn-sm btn-success btn-guardar" type="submit">Guardar</button>
+                <a class="btn btn-sm btn-secondary btn-guardar"
+                  {% if donacion %}
+                    href={% url 'ListaDonaciones' %}
+                  {% else %}
+                    href={% url 'Inicio' %}
+                  {% endif %}
+                  >Cancelar
+                </a>
+              </form>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>  
+{% endblock %}

@@ -1,23 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.urls import reverse_lazy
-from .forms import UsuarioRegistroFormulario, UserEditForm, UserProfile
 from django.shortcuts import render, redirect
+from django.contrib.auth.views import LoginView
+from django.views.generic.edit import FormView
+from django.urls import reverse_lazy
+from .forms import UsuarioRegistroFormulario, UserEditForm
 from django.contrib.auth import login
 from .models import Avatar
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.contrib.auth.models import User
-
-
-@receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
-    else:
-        instance.profile.save()
 
 
 class logueo(LoginView):
