@@ -1,10 +1,10 @@
 {% extends 'inicio.html' %}
 
 {% block content %}
-<section class="py-8 section-top">
+<section class="py-8 section-top-eliminar">
   <div class="container-plus-1">
     <div class="rounded">
-      <div class="pt-4 bg-white rounded shadow donation-section donation-section-border">
+      <div class="pt-4 bg-white rounded shadow donation-section-border">
         <div class="px-6">
           <div class="row align-items-center justify-content-between">
             <div class="col-12 col-md-auto mb-4 mb-md-0">
@@ -12,8 +12,9 @@
               <p class="red-hat-display-regular-font">¿Estás seguro que deseas borrar la donación {{donacion.titulo}}?</p>
               <form method="post" onsubmit="return validarContrasenia(event, '{{ donacion.contrasenia }}')">
                 {% csrf_token %}
-                <label for="contrasenia">Contraseña</label>
-                <input id="contrasenia" name="contrasenia" class="form-control" placeholder="Ingresa la contraseña con la que creaste esta donación" oninput="inputChange()">
+                <label for="contrasenia"><spam><strong>Contraseña</strong></spam> (Ingresa la contraseña con la que creaste esta donación)</label>
+                <input id="contrasenia" name="contrasenia" class="form-control" oninput="inputChange()">
+                <a class="btn anchor-recuperar-contrasenia-eliminar" href="{% url 'RecuperarContrasenia' donacion.pk %}" onclick="esperar();">Recuperar contraseña</a>
                 <small id="error-msg" style="color: red; display: none;">La contraseña no es válida</small>
                 <br>
                 <button class="btn btn-sm btn-danger" type="submit">Borrar</button>

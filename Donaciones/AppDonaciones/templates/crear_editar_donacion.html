@@ -3,34 +3,43 @@
 {% load static %}
 
 {% block content %}
-<section class="py-8 section-top">
+<section class="py-8 section-top-editar">
   <div class="container-plus">
     <div class="rounded">
-      <div class="pt-4 bg-white rounded shadow donation-section">
+      <div class="pt-4 bg-white rounded shadow donation-section-editar">
         <div class="px-6">
           <div class="row align-items-center justify-content-between">
             <div class="col-12 col-md-auto mb-4 mb-md-0">
               <h5 class="red-hat-display-regular-font">{% if donacion %} Editar Donación {% else %} Crear Donación {% endif %}</h5>
-              <p class="small text-secondary red-hat-display-regular-font">{% if donacion %} Edita tu donación {% else %} Sumar una nueva donación disponible {% endif %}</p>
+              <p class="small text-secondary red-hat-display-regular-font">
+                {% if donacion %} 
+                  Actualiza los detalles de tu donación 
+                {% else %} 
+                  Comparte lo que ya no usas con quien lo necesita
+                {% endif %}
+              </p>
               {% if donacion %}
+              {% comment %} Se esta editando la donación {% endcomment %}
                 <form method="post" enctype="multipart/form-data" onsubmit="return validarContrasenia(event, '{{ donacion.contrasenia }}')">
                   {% csrf_token %}                
+                  <div class="table-responsive">
                   <table>
                     {% for campo in form %}
                         <tr>
                             <td style="margin-top: 25px;">{{ campo.label_tag }}</td>
                             <td>
+                              
                               {% if campo.name == "contrasenia" %}
                                   
                                 <!-- Campo oculto que Django sí procesa -->
                                 {{ campo.as_hidden }}
-                                
-                                <input id="contrasenia" name="contrasenia" class="form-control" placeholder="Ingresa la contraseña con la que creaste esta donación" oninput="inputChange()">
+                                <label> (Ingresa la contraseña con la que creaste esta donación)</label>
+                                <div class=div-contrasenia>
+                                  <input id="contrasenia" name="contrasenia" class="form-control" oninput="inputChange()">
+                                  <a class="btn anchor-recuperar-contrasenia" href="{% url 'RecuperarContrasenia' donacion.pk %}" onclick="esperar();">Recuperar contraseña</a>
+                                </div>
                                 <small id="error-msg" style="color: red; display: none;">La contraseña no es válida</small>
                                 <br>
-                                <script>
-                                    document.getElementsByName("contrasenia")[0].setAttribute("placeholder", "Ingresa la contraseña con la que creaste esta donación");
-                                </script>
                               {% else %}
                                 {{ campo }}
                               {% endif %}
@@ -38,12 +47,26 @@
                         </tr>
                     {% endfor %}
                   </table>
+                </div>
               {% else %}
+                {% comment %} Se esta creano la donación {% endcomment %}
                 <form method="post" enctype="multipart/form-data">
                   {% csrf_token %}
+                  <div class="table-responsive">
                   <table>
-                    {{form.as_table}}
+                    {% for campo in form %}
+                        <tr>
+                            <td style="margin-top: 25px;">{{ campo.label_tag }}</td>
+                            <td>
+                              {% if campo.name == "contrasenia" %}
+                                <label> (Se le solicitará al intentar Borrar o Editar esta donación)</label>
+                              {% endif %}
+                              {{ campo }}
+                            </td>
+                        </tr>
+                    {% endfor %}
                   </table>
+                </div>
               {% endif %}
                 <button class="btn btn-sm btn-success btn-guardar" type="submit">Guardar</button>
                 <a class="btn btn-sm btn-secondary btn-guardar"

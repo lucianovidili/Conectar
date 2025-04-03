@@ -1,43 +1,3 @@
-function filterTable() {
-    const input = document.getElementById("searchInput");
-    const filter = normalizeText(input.value.toLowerCase().trim()); // Convertir a minúsculas, eliminar espacios y normalizar
-    const tableBody = document.getElementById("tableBody");
-    const rows = tableBody.getElementsByTagName("tr");
-    let hasVisibleRows = false;
-  
-    // Crear una expresión regular para buscar solo al inicio de palabras
-    const regex = new RegExp(`\\b${filter}`, "i");
-  
-    for (let i = 0; i < rows.length; i++) {
-      const cells = rows[i].getElementsByTagName("td");
-      let rowMatches = false;
-  
-      if (cells.length > 0) { // Ignorar el mensaje "sin resultados"
-        for (let j = 0; j < cells.length; j++) {
-          const cellText = normalizeText(cells[j].innerText.toLowerCase().trim());
-          const textarea = cells[j].querySelector("textarea");
-          const textareaContent = textarea
-            ? normalizeText(textarea.value.toLowerCase().trim())
-            : "";
-  
-          // Verificar si el filtro coincide solo con el inicio de palabras
-          if (regex.test(cellText) || regex.test(textareaContent)) {
-            rowMatches = true;
-            break;
-          }
-        }
-        rows[i].style.display = rowMatches ? "" : "none";
-        if (rowMatches) hasVisibleRows = true;
-      }
-    }
-  
-    // Mostrar u ocultar el mensaje de "sin resultados"
-    const noResultsMessage = document.getElementById("noResultsMessage");
-    if (noResultsMessage) {
-      noResultsMessage.style.display = hasVisibleRows ? "none" : "";
-    }
-}  
-  // Función para normalizar texto y eliminar acentos
 function normalizeText(text) {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
@@ -77,6 +37,11 @@ function exportTableToExcel() {
 }
 
 
+function chopearPalabraFinal(texto, palabra) {
+  let regex = new RegExp(palabra + "$"); // Expresión regular para buscar la palabra al final
+  return texto.replace(regex, "").trim(); // Reemplaza la palabra por vacío y quita espacios extra
+}
+
 function handleWhatsAppClick(button) {
     // Encuentra la fila más cercana al botón
     const row = button.closest("tr");
@@ -84,12 +49,17 @@ function handleWhatsAppClick(button) {
 
     // Verifica si la fila tiene suficientes celdas
     if (cells.length > 1) {
-        const titulo = cells[0].textContent.trim();  // Primera celda
+        const titulo = cells[1].textContent.trim();  // Segunda celda
+        const descripcion = cells[2].textContent.trim();  // Tercera celda
         const propietario = cells[cells.length - 3].textContent.trim(); // Antepenúltima celda
-        const phone = cells[cells.length - 2].textContent.trim(); // Anteúltima celda
-        const message = "Hola " + propietario + ", me comunico con respecto a su donación: " + titulo + ". ";
-
+        var phone = cells[cells.length - 2].textContent.trim(); // Anteúltima celda
+        const message = "Hola " + propietario + ", me comunico con respecto a su donación: " + titulo + ". " + descripcion + ". ";
+        
         if (phone) {
+            phone = chopearPalabraFinal(phone, "Contactar");
+            if (phone.slice(0, 3) !== "549") {
+              phone = "549" + phone;
+            }
             const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, "_blank"); // Abre WhatsApp Web
         } else {
@@ -98,42 +68,6 @@ function handleWhatsAppClick(button) {
     } else {
         alert("Error: No se pudo encontrar el número de teléfono.");
     }
-}
-
-
-function sortTable(columnIndex) {
-  let table = document.querySelector("#donations-table tbody");
-  let rows = Array.from(table.querySelectorAll("tr"));
-
-  // Obtener el estado de orden actual
-  let isAscending = table.getAttribute("data-sort") !== "asc";
-
-  rows.sort((rowA, rowB) => {
-      let cellA = rowA.cells[columnIndex]?.textContent.trim() || "";
-      let cellB = rowB.cells[columnIndex]?.textContent.trim() || "";
-
-      // Evitar celdas vacías o no definidas
-      if (!cellA && !cellB) return 0;
-      if (!cellA) return isAscending ? 1 : -1;
-      if (!cellB) return isAscending ? -1 : 1;
-
-      // Intentar convertir a número antes de comparar
-      let numA = parseFloat(cellA.replace(/,/g, "")); // Manejo de números con comas
-      let numB = parseFloat(cellB.replace(/,/g, ""));
-
-      if (!isNaN(numA) && !isNaN(numB)) {
-          return isAscending ? numA - numB : numB - numA;
-      } else {
-          return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
-      }
-  });
-
-  // Actualizar estado de orden
-  table.setAttribute("data-sort", isAscending ? "asc" : "desc");
-
-  // Reemplazar filas en la tabla
-  table.innerHTML = "";
-  rows.forEach(row => table.appendChild(row));
 }
 
 
@@ -158,3 +92,148 @@ function inputChange()
   var errorMsg = document.getElementById("error-msg");
   errorMsg.style.display = "none";
 }
+
+
+document.getElementById("load-more").addEventListener("click", function (event) {
+  event.preventDefault(); // Evita que la página suba
+});
+let page = 1;
+let query = "";
+
+
+function buscarDonaciones() {
+    query = document.getElementById("search-input").value;
+    page = 1;
+    document.getElementById("tableBody").innerHTML = ""; // Limpia resultados anteriores
+    cargarMas();
+}
+
+function cargarMas() {
+    const donacionesList = document.getElementById('tableBody');
+    
+    var botonCargarMas = document.getElementById('load-more');
+    botonCargarMas.className = "btn btn-sm btn-primary";
+    botonCargarMas.disabled = false;
+    botonCargarMas.innerText = "Cargar más";
+    
+    // FECHAS //
+    fetch(`/buscar/?q=${query}&page=${page}`, {
+        headers: { "X-Requested-With": "XMLHttpRequest" } // Indica que es una petición AJAX
+    })
+    .then(response => response.json())
+    .then(data => {
+        data.donaciones.forEach(donacion => {
+            const fechaISO = donacion.fecha_creacion;
+            // const fechaLocal = new Date(fechaISO).toLocaleString();
+            const fecha = new Date(fechaISO);
+            const formato = fecha.toLocaleString("es-AR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${formato}</td>
+                <td>${donacion.titulo}</td>
+                <td>${donacion.descripcion}</td>
+                <td><img class="img-fluid mb-3 rounded" style="width: 90%; height: auto;" src="https://somosconectar.org/${donacion.imagen}" alt="Imagen" /></td>
+                <td>${donacion.propietario}</td>
+                <td>${donacion.telefono}
+                  <a class="anchor-whatsapp" onclick="handleWhatsAppClick(this)">Contactar</a>
+                </td>
+                <td class="py-4 px-6">
+                  <a class="btn btn-primary btn-xs" href="https://somosconectar.org/editarDonacion/${donacion.id}">Editar</a>
+                  <a class="btn btn-danger btn-xs" href="https://somosconectar.org/eliminarDonacion/${donacion.id}">Borrar</a>
+                </td>
+            `;
+            donacionesList.appendChild(tr);
+        });
+
+        if (data.has_next) {
+            document.getElementById("load-more").style.display = "block";
+        } else {
+            botonCargarMas.disabled = true;
+            botonCargarMas.innerText = "No hay más elementos";
+            botonCargarMas.className = "btn btn-light";            
+        }
+
+        page++;
+    });
+}
+cargarMas();
+
+
+function detectarEnter(event) {
+  if (event.key === "Enter") { // Detecta si la tecla presionada es "Enter"
+      buscarDonaciones(); // Llama a la función de búsqueda
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const boton = document.querySelector("#miBoton");
+  if (boton) {
+      boton.addEventListener("click", function() {
+          console.log("Botón clickeado");
+      });
+  }
+    const btnRecuperar = document.querySelector(".anchor-recuperar-contrasenia");
+   
+    if (btnRecuperar) {
+          alert("HOLA");
+          btnRecuperar.addEventListener("click", function () {
+              document.body.style.cursor = "wait"; // Cambia el cursor a "cargando"
+              
+              // Opcional: Deshabilitar el botón mientras se carga
+              this.style.pointerEvents = "none"; 
+              this.style.opacity = "0.7"; // Darle una apariencia de "deshabilitado"
+              
+              // Restaurar cursor después de 3 segundos (si la nueva página tarda en cargar)
+              setTimeout(() => {
+                  document.body.style.cursor = "default"; 
+                  this.style.pointerEvents = "auto"; 
+                  this.style.opacity = "1";
+              }, 3000);
+          });
+    } 
+});
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const enlaceRecuperar = document.querySelector(".anchor-recuperar-contrasenia");
+
+//   if (enlaceRecuperar) {
+//       enlaceRecuperar.addEventListener("click", function (event) {
+//           event.preventDefault(); // Evita que el enlace funcione inmediatamente
+//           this.style.cursor = "wait"; // Cambia el cursor a "cargando"
+//           this.style.pointerEvents = "none"; // Deshabilita el enlace
+//           this.style.opacity = "0.6"; // Reduce la opacidad para indicar que está deshabilitado
+
+//           alert("SII");
+
+//           // Opcional: Restaurar después de 3 segundos si es necesario
+//           setTimeout(() => {
+//               this.style.cursor = "pointer"; // Vuelve al cursor normal
+//               this.style.pointerEvents = "auto"; // Reactiva el enlace
+//               this.style.opacity = "1";
+//               window.location.href = this.href; // Redirige manualmente al enlace
+//           }, 3000);
+//       });
+//   }
+// });
+
+function esperar() {
+  const enlaceRecuperar = document.querySelector(".anchor-recuperar-contrasenia");
+  document.body.style.cursor = "wait"; // Cambia el cursor a "cargando"
+  enlaceRecuperar.style.pointerEvents = "none"; // Deshabilita el enlace
+  enlaceRecuperar.style.opacity = "0.1";
+}
+
+// const maxWidthCellphone = 1368;
+// if (screen.width <= maxWidthCellphone) {
+//     const footer = document.getElementById('footer');
+//     const footer_1 = document.getElementById('footer-1');
+//     footer.style.display = 'none';
+//     footer_1.style.display = 'none';
+// }

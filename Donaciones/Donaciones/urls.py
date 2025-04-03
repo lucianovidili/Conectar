@@ -20,7 +20,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("appLiga/", include("AppLigaDeFutbol.urls")),
     path("", include("AppDonaciones.urls")),
-    path("usuarios/", include("AppUsuarios.urls")),
+    path("usuarios/", include("AppUsuarios.urls")),  # Endpoint para la API JSON
 ]

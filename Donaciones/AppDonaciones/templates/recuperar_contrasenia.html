@@ -1,0 +1,23 @@
+{% extends 'inicio.html' %}
+
+{% block content %}
+
+<div style="margin-top: 150px;" class="container text-center">
+    <h2>{% if error == 1 %}
+            Ha ocurrido un problema en el envío del e-mail.
+        {% else %}
+            Se ha enviado un correo electrónico con tu contraseña a:
+        {% endif %}
+    </h2>
+</div>
+
+<div style="margin-bottom: 185px;" class="container text-center">
+    <h4>{% if error == 1 %}
+            Por favor chequee la dirección de correo electrónico.
+        {% else %}
+            {{email}}
+        {% endif %}
+    </h4>
+</div>
+
+{% endblock %}
