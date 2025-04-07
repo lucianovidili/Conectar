@@ -47,7 +47,18 @@
                 <a class="btn btn-primary btn-sm red-hat-display-regular" href={% url 'Inicio' %}>Inicio</a>
             </div>            
         </div>
-        
+
+        <div class="container mt-3">
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+        </div> 
         <!-- Este es el bloque que se va a cambiar -->
         {% block content %}
 

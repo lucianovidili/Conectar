@@ -125,6 +125,12 @@ function cargarMas() {
         data.donaciones.forEach(donacion => {
             const fechaISO = donacion.fecha_creacion;
             // const fechaLocal = new Date(fechaISO).toLocaleString();
+            if (donacion.imagen) {
+                var ruta_imagen = "/static/" + donacion.imagen;    
+            }
+            else {
+                var ruta_imagen = "/static/assets/img/sin-imagen.jpg" + donacion.imagen;
+            }
             const fecha = new Date(fechaISO);
             const formato = fecha.toLocaleString("es-AR", {
                 year: "numeric",
@@ -139,14 +145,15 @@ function cargarMas() {
                 <td>${formato}</td>
                 <td>${donacion.titulo}</td>
                 <td>${donacion.descripcion}</td>
-                <td><img class="img-fluid mb-3 rounded" style="width: 90%; height: auto;" src="https://somosconectar.org/${donacion.imagen}" alt="Imagen" /></td>
+                <td>${donacion.imagen}</td>
+                <td><img class="img-fluid mb-3 rounded" style="width: 90%; height: auto;" src=${ruta_imagen} alt="Imagen"></td>
                 <td>${donacion.propietario}</td>
                 <td>${donacion.telefono}
                   <a class="anchor-whatsapp" onclick="handleWhatsAppClick(this)">Contactar</a>
                 </td>
                 <td class="py-4 px-6">
-                  <a class="btn btn-primary btn-xs" href="https://somosconectar.org/editarDonacion/${donacion.id}">Editar</a>
-                  <a class="btn btn-danger btn-xs" href="https://somosconectar.org/eliminarDonacion/${donacion.id}">Borrar</a>
+                  <a class="btn btn-primary btn-xs" href="http://127.0.0.1:8000/editarDonacion/${donacion.id}">Editar</a>
+                  <a class="btn btn-danger btn-xs" href="http://127.0.0.1:8000/eliminarDonacion/${donacion.id}">Borrar</a>
                 </td>
             `;
             donacionesList.appendChild(tr);

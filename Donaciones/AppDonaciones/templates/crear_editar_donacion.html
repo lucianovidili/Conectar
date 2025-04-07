@@ -18,64 +18,47 @@
                   Comparte lo que ya no usas con quien lo necesita
                 {% endif %}
               </p>
-              {% if donacion %}
               {% comment %} Se esta editando la donación {% endcomment %}
-                <form method="post" enctype="multipart/form-data" onsubmit="return validarContrasenia(event, '{{ donacion.contrasenia }}')">
-                  {% csrf_token %}                
-                  <div class="table-responsive">
+              <form method="post" enctype="multipart/form-data" {% if donacion %}onsubmit="return validarContrasenia(event, '{{ donacion.contrasenia }}')" {% endif %}>
+                {% csrf_token %}
+              
+                <div class="table-responsive">
                   <table>
                     {% for campo in form %}
-                        <tr>
-                            <td style="margin-top: 25px;">{{ campo.label_tag }}</td>
-                            <td>
-                              
-                              {% if campo.name == "contrasenia" %}
-                                  
-                                <!-- Campo oculto que Django sí procesa -->
-                                {{ campo.as_hidden }}
-                                <label> (Ingresa la contraseña con la que creaste esta donación)</label>
-                                <div class=div-contrasenia>
-                                  <input id="contrasenia" name="contrasenia" class="form-control" oninput="inputChange()">
-                                  <a class="btn anchor-recuperar-contrasenia" href="{% url 'RecuperarContrasenia' donacion.pk %}" onclick="esperar();">Recuperar contraseña</a>
-                                </div>
-                                <small id="error-msg" style="color: red; display: none;">La contraseña no es válida</small>
-                                <br>
-                              {% else %}
-                                {{ campo }}
-                              {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                  </table>
-                </div>
-              {% else %}
-                {% comment %} Se esta creano la donación {% endcomment %}
-                <form method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <div class="table-responsive">
-                  <table>
-                    {% for campo in form %}
-                        <tr>
-                            <td style="margin-top: 25px;">{{ campo.label_tag }}</td>
-                            <td>
-                              {% if campo.name == "contrasenia" %}
-                                <label> (Se le solicitará al intentar Borrar o Editar esta donación)</label>
-                              {% endif %}
+                      <tr>
+                        <td style="margin-top: 25px;">{{ campo.label_tag }}</td>
+                        <td>
+                          {% if campo.name == "contrasenia" %}
+                            {% if donacion %}
+                              {{ campo.as_hidden }}
+                              <label>(Ingresa la contraseña con la que creaste esta donación)</label>
+                              <div class="div-contrasenia">
+                                <input id="contrasenia" name="contrasenia" class="form-control" oninput="inputChange()">
+                                <a class="btn anchor-recuperar-contrasenia" href="{% url 'RecuperarContrasenia' donacion.pk %}" onclick="esperar();">Recuperar contraseña</a>
+                              </div>
+                              <small id="error-msg" style="color: red; display: none;">La contraseña no es válida</small>
+                              <br>
+                            {% else %}
+                              <label>(Se le solicitará al intentar Borrar o Editar esta donación)</label>
                               {{ campo }}
-                            </td>
-                        </tr>
+                            {% endif %}
+                          {% else %}
+                            {{ campo }}
+                          {% endif %}
+                        </td>
+                      </tr>
                     {% endfor %}
                   </table>
                 </div>
-              {% endif %}
+              
                 <button class="btn btn-sm btn-success btn-guardar" type="submit">Guardar</button>
                 <a class="btn btn-sm btn-secondary btn-guardar"
-                  {% if donacion %}
-                    href={% url 'ListaDonaciones' %}
-                  {% else %}
-                    href={% url 'Inicio' %}
-                  {% endif %}
-                  >Cancelar
+                   {% if donacion %}
+                     href={% url 'ListaDonaciones' %}
+                   {% else %}
+                     href={% url 'Inicio' %}
+                   {% endif %}>
+                   Cancelar
                 </a>
               </form>
             </div>

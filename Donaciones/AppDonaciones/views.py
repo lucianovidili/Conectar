@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView, UpdateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView
 from django.shortcuts import render
 from .forms import DonacionFormulario
 from .models import Donacion
@@ -13,6 +13,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 import openpyxl
 from django.utils.timezone import localtime
+from django.contrib import messages
 from openpyxl.styles import Font  # Importar Font para darle formato
 from django.core.mail import send_mail
 from django.conf import settings
@@ -36,6 +37,35 @@ class crear_donacion(CreateView):
     success_url = reverse_lazy("ListaDonaciones")
     template_name = "crear_editar_donacion.html"
 
+    def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+            return response
+        except ValueError as e:
+            messages.error(self.request, str(e))  # Muestra el error de forma elegante
+            return super().form_invalid(form)
+
+    def form_invalid(self, form):
+        # Personalización del mensaje de error
+        if "imagen" in form.errors:
+            error_text = str(form.errors["imagen"][0]).lower()
+
+            extensiones_raw = [".cr2", ".nef", ".arw", ".rw2", ".orf", ".dng", ".raw"]
+            if any(ext in error_text for ext in extensiones_raw):
+                messages.error(
+                    self.request,
+                    "❌ Los archivos RAW no están permitidos. Por favor suba una imagen en formato JPG, PNG o HEIC.",
+                )
+            else:
+                messages.error(
+                    self.request,
+                    "Los archivos RAW no están permitidos. Por favor suba una imagen en formato JPG, PNG o HEIC.",
+                )
+        else:
+            messages.error(self.request, "El formulario tiene errores.")
+
+        return super().form_invalid(form)
+
 
 class editar_donacion(UpdateView):
     model = Donacion
@@ -44,62 +74,27 @@ class editar_donacion(UpdateView):
     success_url = reverse_lazy("ListaDonaciones")
 
     def form_valid(self, form):
-        """Si el formulario es válido, guarda y redirige"""
-        response = super().form_valid(form)
-        return response
+        try:
+            response = super().form_valid(form)
+            return response
+        except ValueError as e:
+            messages.error(self.request, str(e))  # Muestra el error de forma elegante
+            return super().form_invalid(form)
 
     def form_invalid(self, form):
-        """Si el formulario no es válido, muestra errores y recarga la página"""
-        print(form.errors)  # Para depuración en la terminal
-        return self.render_to_response(self.get_context_data(form=form))
+        messages.error(
+            self.request,
+            "Los archivos RAW no están permitidos. Por favor suba una imagen en formato JPG, PNG o HEIC.",
+        )  # Mensaje general
+        print("❌ Formulario inválido")
+        print(form.errors)
+        return super().form_invalid(form)
 
 
 class eliminar_donacion(DeleteView):
     model = Donacion
     template_name = "eliminar_donacion.html"
     success_url = reverse_lazy("ListaDonaciones")
-
-
-# class listar_jugadores_transferibles(LoginRequiredMixin, ListView):
-# def lista_donaciones(request):
-#     if (
-#         False
-#         # request.method == "GET"
-#         # and request.headers.get("X-Requested-With") == "XMLHttpRequest"
-#     ):
-#         page_number = request.GET.get("page", 1)
-#         donaciones = Donacion.objects.all().order_by("id")
-#         paginator = Paginator(donaciones, 5)  # 5 jugadores por página
-
-#         try:
-#             page = paginator.page(page_number)
-#         except:
-#             return JsonResponse({"donaciones": [], "has_more": False})
-
-#         donaciones_data = [
-#             {
-#                 "id": jugador.pk,
-#                 "nombre": jugador.nombre,
-#                 "apellido": jugador.apellido,
-#                 "imagen_url": jugador.imagen.url if jugador.imagen else None,
-#             }
-#             for jugador in page
-#         ]
-
-#         # return JsonResponse({"jugadores": donaciones_data, "has_more": page.has_next()})
-#         return render(request, "lista_donaciones.html", {"donaciones": donaciones})
-
-#     donaciones = Donacion.objects.all().order_by("fecha_creacion")
-#     return render(request, "lista_donaciones.html", {"donaciones": donaciones})
-
-
-# def listar_donaciones(request):
-#     donaciones = Donacion.objects.all().order_by("-fecha_creacion")
-#     paginator = Paginator(donaciones, 10)  # 10 donaciones por página
-#     page_number = request.GET.get("page", 1)
-#     page_obj = paginator.get_page(page_number)
-
-#     return render(request, "listar_donaciones.html", {"page_obj": page_obj})
 
 
 def listar_donaciones(request):
@@ -162,19 +157,6 @@ class DonacionListView(generics.ListAPIView):
     )  # Ordenar por fecha de creación en forma descendente
     serializer_class = DonacionSerializer  # Usar el serializer que creamos
     pagination_class = DonacionPagination  # Usar la paginación que definimos
-
-
-# def buscar_donaciones(request):
-#     donaciones = Donacion.objects.all().values(
-#         "id",
-#         "titulo",
-#         "descripcion",
-#         "imagen",
-#         "propietario",
-#         "telefono",
-#         "fecha_creacion",
-#     )
-#     return JsonResponse({"donaciones": list(donaciones)})
 
 
 def buscar_donaciones(request):
@@ -243,45 +225,3 @@ def exportar_excel(request):
     wb.save(response)
 
     return response
-
-
-# def exportar_excel(request):
-# # Crear archivo Excel
-# wb = openpyxl.Workbook()
-# ws = wb.active
-# ws.title = "Donaciones"
-
-# # Encabezados (excluyendo la 4ta y última columna)
-# headers = ["Fecha de Creación", "Título", "Descripción", "Propietario", "Teléfono"]
-
-# # Establecer negrita en los encabezados
-# font = Font(bold=True)  # Definir el estilo de negrita
-# for col_num, header in enumerate(headers, 1):
-#     cell = ws.cell(row=1, column=col_num)
-#     cell.value = header
-#     cell.font = font  # Aplicar el estilo de negrita
-
-# # Obtener datos y convertir fecha a naive datetime
-# donaciones = Donacion.objects.all().values_list(
-#     "fecha_creacion", "titulo", "descripcion", "propietario", "telefono"
-# )
-
-# for donacion in donaciones:
-#     fecha_sin_tz = localtime(donacion[0]).replace(tzinfo=None)  # Convertir a naive
-#     fecha_formateada = fecha_sin_tz.strftime(
-#         "%d/%m/%Y %H:%M:%S"
-#     )  # Formatear como "DD/MM/YYYY HH:MM:SS"
-#     fila = (
-#         fecha_formateada,
-#         *donacion[1:],
-#     )  # Reemplazar la fecha formateada en la tupla
-#     ws.append(fila)
-
-# # Configurar la respuesta HTTP para la descarga
-# response = HttpResponse(
-#     content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-# )
-# response["Content-Disposition"] = 'attachment; filename="donaciones.xlsx"'
-# wb.save(response)
-
-# return response

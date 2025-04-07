@@ -1,11 +1,9 @@
 import os
 from pathlib import Path
-import environ
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
-import requests
-import environ
-import os
+from pillow_heif import register_heif_opener
+
+register_heif_opener()
+
 
 # from Donaciones.OUT_oauth2_setup import obtener_credenciales
 
@@ -144,6 +142,9 @@ MEDIA_URL = ""
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "AppDonaciones/static")
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
+
+
 # Cargar variables de entorno desde .env
 # env = environ.Env()
 # environ.Env.read_env()
@@ -207,16 +208,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "AppDonaciones/static")
 
 # Inicializa environ y carga el archivo .env
 # Inicializa `environ`
-env = environ.Env()
+# env = environ.Env()
 
-# Cargar variables del archivo .env
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+# # Cargar variables del archivo .env
+# environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-# Configuración del email
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST")  # mail.somosconectar.org
-EMAIL_PORT = env.int("EMAIL_PORT", default=465)
-EMAIL_USE_SSL = env.bool("EMAIL_USE_TLS", default=True)
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")  # info@somosconectar.org
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")  # info@somosconectar.org
+# # Configuración del email
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = env("EMAIL_HOST")  # mail.somosconectar.org
+# EMAIL_PORT = env.int("EMAIL_PORT", default=465)
+# EMAIL_USE_SSL = env.bool("EMAIL_USE_TLS", default=True)
+# EMAIL_HOST_USER = env("EMAIL_HOST_USER")  # info@somosconectar.org
+# EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+# DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")  # info@somosconectar.org
